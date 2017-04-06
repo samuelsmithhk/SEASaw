@@ -90,3 +90,9 @@ ENV/
 
 # IDE files
 .idea
+
+# Vagrant
+.vagrant
+
+# MAC
+.DS_Store
