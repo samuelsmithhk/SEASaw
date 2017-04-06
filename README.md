@@ -12,9 +12,11 @@ The project is designed to be easily deployable anywhere.
 
 - clone this repo
 - cd into the root directory of the repo
-- run command "vagrantup"
+- run command "vagrant up"
 
 If this is your first time running the project, it may take some time, as it will be downloading dependencies
+
+**When finished, be sure to tear everything down with "vagrant halt", your battery will thank you.**
 
 ## How to use
 
