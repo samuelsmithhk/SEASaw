@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "SEASaw Data Collector API"
+    },
+    "paths": {
+        "/results": {
+            "get": {
+                "description": "Gets an array of result IDs.\n\nOptional query params **start** and **end** determine start and end timestamps of the range of time that the results were collected by the data collector in. (if not specified, everything)\n\nOptional query param **pagination** determines the number of results to return (if not specified, 10) (max is 100)\n\nOptional query param **page** determines which page of the pagination to retrieve (if not specifed, last page)\n\nSo, calling results without any options will return an array of IDs containing the latest 10 results found.\n",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The start of the query range (yyMMddhhmmssSSS)",
+                        "required": false,
+                        "type": "number",
+                        "format": "long"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "The end of the query range (yyMMddhhmmssSSS)",
+                        "required": false,
+                        "type": "number",
+                        "format": "long"
+                    },
+                    {
+                        "name": "pagination",
+                        "in": "query",
+                        "description": "How many results per page",
+                        "required": false,
+                        "type": "number",
+                        "format": "int"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page of the pagination",
+                        "required": false,
+                        "type": "number",
+                        "format": "long"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "ResultIDs",
+                            "type": "array",
+                            "items": {
+                                "title": "ResultID",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        }
+    }
+}

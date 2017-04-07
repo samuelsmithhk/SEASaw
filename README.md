@@ -27,5 +27,7 @@ If this is your first time running the project, vagrant up may take some time, a
 With a running environment, you can hit one of the three provided interfaces:
 
 Datasource API Doc - http://192.168.33.10:25280/doc
+
 Index API Doc - http://192.168.33.10:25282/doc
+
 Frontend API Doc - http://192.168.33.10:25284/doc
