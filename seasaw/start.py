@@ -1,9 +1,16 @@
+import os
+
 from tornado import process
 from tornado.web import Application
+from tornado.web import StaticFileHandler
 from tornado.ioloop import IOLoop
 
 from seasaw import inventory
 from seasaw.datasource.datasourceinterface import HealthCheckHandler
+from seasaw.datasource.datasourceinterface import ResultQueryHandler
+
+root = os.path.dirname(__file__)
+print(root)
 
 def main():
     # spin up component APIs
@@ -14,7 +21,9 @@ def main():
         # video frame sequence extractor threads
 
         instance = Application([
-            (r"/healthcheck", HealthCheckHandler)
+            (r"/healthcheck", HealthCheckHandler),
+            (r"/results", ResultQueryHandler),
+            (r"/(.*)", StaticFileHandler, {"path": "../static/apidocs/datasource/", "default_filename": "index.html"})
         ])
 
         port = inventory.ports[process_id]
