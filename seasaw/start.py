@@ -8,6 +8,7 @@ from tornado.ioloop import IOLoop
 from seasaw import inventory
 from seasaw.datasource.datasourceinterface import HealthCheckHandler
 from seasaw.datasource.datasourceinterface import ResultQueryHandler
+from seasaw.datasource.datasourceinterface import ResultGetterHandler
 
 root = os.path.dirname(__file__)
 print(root)
@@ -22,8 +23,9 @@ def main():
 
         instance = Application([
             (r"/healthcheck", HealthCheckHandler),
+            (r"/results/(.*)", ResultGetterHandler),
             (r"/results", ResultQueryHandler),
-            (r"/(.*)", StaticFileHandler, {"path": "../static/apidocs/datasource/", "default_filename": "index.html"})
+            (r"/(.*)", StaticFileHandler, {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
         ])
 
         port = inventory.ports[process_id]
