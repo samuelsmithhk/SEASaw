@@ -7,7 +7,7 @@
     "paths": {
         "/results": {
             "get": {
-                "description": "Gets an array of result IDs.\n\nOptional query params **start** and **end** determine start and end timestamps of the range of time that the results were collected by the data collector in. (if not specified, everything)\n\nOptional query param **pagination** determines the number of results to return (if not specified, 10) (max is 100)\n\nOptional query param **page** determines which page of the pagination to retrieve (if not specifed, last page)\n\nSo, calling results without any options will return an array of IDs containing the latest 10 results found.\n",
+                "description": "Gets an array of result IDs.\n\nOptional query params **start** and **end** determine start and end timestamps of the range of time that the results were collected by the data collector in. (if not specified, everything)\n\nOptional query param **pagination** determines the number of results to return (if not specified, 10) (max is 100, if any parameter higher than 100 will be set back to 100)\n\nOptional query param **page** determines which page of the pagination to retrieve (if not specifed, last page)\n\nSo, calling results without any options will return an array of IDs containing the latest 10 results found.\n",
                 "parameters": [
                     {
                         "name": "start",
@@ -46,11 +46,77 @@
                     "200": {
                         "description": "Successful response",
                         "schema": {
-                            "title": "ResultIDs",
-                            "type": "array",
-                            "items": {
-                                "title": "ResultID",
-                                "type": "string"
+                            "type": "object",
+                            "properties": {
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "result IDs"
+                                    }
+                                },
+                                "pagination": {
+                                    "type": "number",
+                                    "format": "int",
+                                    "description": "Number of results per page"
+                                },
+                                "page": {
+                                    "type": "number",
+                                    "format": "int",
+                                    "description": "The page number of the results"
+                                },
+                                "count": {
+                                    "type": "number",
+                                    "format": "int",
+                                    "description": "The total number of results that match the query"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/results/{result_id}": {
+            "get": {
+                "description": "Gets the result object tied to the result ID\n",
+                "parameters": [
+                    {
+                        "name": "result_id",
+                        "in": "path",
+                        "description": "The ID of the result object being requested",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result_id": {
+                                    "type": "string",
+                                    "description": "The ID of this result object"
+                                },
+                                "video_title": {
+                                    "type": "string",
+                                    "description": "The title of the video"
+                                },
+                                "video_url": {
+                                    "type": "string",
+                                    "description": "The url of the video"
+                                },
+                                "frames": {
+                                    "type": "array",
+                                    "description": "urls to frames",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "url to a frame"
+                                    }
+                                }
                             }
                         }
                     },
