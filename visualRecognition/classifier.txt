@@ -1,0 +1,1302 @@
+{
+  "images": [
+    {
+      "error": {
+        "error_id": "input_error",
+        "description": "Ignoring non-image or unsupported extension [Images0/.DS_Store]."
+      },
+      "image": "../seasaw/frames/Images0.zip/Images0/.DS_Store"
+    },
+    {
+      "error": {
+        "error_id": "input_error",
+        "description": "Ignoring non-image or unsupported extension [__MACOSX/Images0/._.DS_Store]."
+      },
+      "image": "../seasaw/frames/Images0.zip/__MACOSX/Images0/._.DS_Store"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/green turtle",
+              "class": "green turtle",
+              "score": 0.786
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.951
+            },
+            {
+              "class": "turtle",
+              "score": 0.961
+            },
+            {
+              "class": "reptile",
+              "score": 0.961
+            },
+            {
+              "class": "animal",
+              "score": 0.962
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.716
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/34428a5c98825674e71791f991dd24f8e2f9694665223ca44acb3620.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/clown anemone fish",
+              "class": "clown anemone fish",
+              "score": 0.939
+            },
+            {
+              "class": "fish",
+              "score": 1.0
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 1.0
+            },
+            {
+              "class": "animal",
+              "score": 1.0
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/anemone fish",
+              "class": "anemone fish",
+              "score": 0.871
+            },
+            {
+              "class": "orange color",
+              "score": 0.988
+            },
+            {
+              "class": "greenish blue color",
+              "score": 0.792
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/42606036b6234b47cf27a49f0f51f04907f0ad4c1310644195cbe927.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/puffer",
+              "class": "puffer",
+              "score": 0.967
+            },
+            {
+              "class": "fish",
+              "score": 0.986
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.986
+            },
+            {
+              "class": "animal",
+              "score": 0.986
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/balloonfish",
+              "class": "balloonfish",
+              "score": 0.53
+            },
+            {
+              "class": "greenish blue color",
+              "score": 0.854
+            },
+            {
+              "class": "greenishness color",
+              "score": 0.557
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/60832ea071e280b37ae10b30b091028903ac4db8ad9a57dc4d8392e9.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/lizardfish",
+              "class": "lizardfish",
+              "score": 0.98
+            },
+            {
+              "class": "fish",
+              "score": 0.98
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.98
+            },
+            {
+              "class": "animal",
+              "score": 0.98
+            },
+            {
+              "class": "sea green color",
+              "score": 0.993
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/67895fd72bb6c5ab6f0f551eae03e0563d37ed2d86e306edb620972e.jpg"
+    },
+    {
+      "error": {
+        "error_id": "input_error",
+        "description": "Invalid image data. Supported formats are JPG and PNG."
+      },
+      "image": "../seasaw/frames/Images0.zip/__MACOSX/Images0/._67895fd72bb6c5ab6f0f551eae03e0563d37ed2d86e306edb620972e.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.987
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.991
+            },
+            {
+              "class": "turtle",
+              "score": 0.992
+            },
+            {
+              "class": "reptile",
+              "score": 0.992
+            },
+            {
+              "class": "animal",
+              "score": 0.992
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/b14469a6b239dfed928082ca9a9ac42ba80d4d48132eda8d38409d81.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic mammal/bottle-nosed whale",
+              "class": "bottle-nosed whale",
+              "score": 0.74
+            },
+            {
+              "class": "whale",
+              "score": 0.985
+            },
+            {
+              "class": "aquatic mammal",
+              "score": 0.985
+            },
+            {
+              "class": "mammal",
+              "score": 0.985
+            },
+            {
+              "class": "animal",
+              "score": 0.985
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/whale/bottlenose dolphin",
+              "class": "bottlenose dolphin",
+              "score": 0.652
+            },
+            {
+              "class": "dolphin",
+              "score": 0.937
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/whale/Atlantic bottlenose dolphin",
+              "class": "Atlantic bottlenose dolphin",
+              "score": 0.578
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/b9f60939dc8c1acfffe522b76d69ea6ca33952dbebf395bd5429536b.jpg"
+    },
+    {
+      "error": {
+        "error_id": "input_error",
+        "description": "Invalid image data. Supported formats are JPG and PNG."
+      },
+      "image": "../seasaw/frames/Images0.zip/__MACOSX/Images0/._b9f60939dc8c1acfffe522b76d69ea6ca33952dbebf395bd5429536b.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.923
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.983
+            },
+            {
+              "class": "turtle",
+              "score": 0.986
+            },
+            {
+              "class": "reptile",
+              "score": 0.986
+            },
+            {
+              "class": "animal",
+              "score": 0.986
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/green turtle",
+              "class": "green turtle",
+              "score": 0.53
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/c7e371886307603c00049a90417e343acc87f22e29f02ae68e24e449.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/grunt",
+              "class": "grunt",
+              "score": 0.806
+            },
+            {
+              "class": "fish",
+              "score": 0.915
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.915
+            },
+            {
+              "class": "animal",
+              "score": 0.915
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/porkfish",
+              "class": "porkfish",
+              "score": 0.558
+            },
+            {
+              "class": "sea green color",
+              "score": 0.948
+            },
+            {
+              "class": "lemon yellow color",
+              "score": 0.718
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/d1f22b9083f9ab48f5393f250de3623eba2cb789a3b7989d914b551b.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "class": "ascidian (minute marine animal)",
+              "score": 0.91
+            },
+            {
+              "class": "animal",
+              "score": 0.965
+            },
+            {
+              "type_hierarchy": "/animal/invertebrate/shellfish/sea slug",
+              "class": "sea slug",
+              "score": 0.631
+            },
+            {
+              "class": "shellfish",
+              "score": 0.631
+            },
+            {
+              "class": "invertebrate",
+              "score": 0.769
+            },
+            {
+              "type_hierarchy": "/animal/invertebrate/flatworm",
+              "class": "flatworm",
+              "score": 0.53
+            },
+            {
+              "class": "worm",
+              "score": 0.53
+            },
+            {
+              "class": "chestnut color",
+              "score": 0.835
+            },
+            {
+              "class": "reddish brown color",
+              "score": 0.807
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/d79e32ea52c41d3e392c6a343d0dbb0f1f74e4f91d17c75b9b7d03ec.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/creole-fish",
+              "class": "creole-fish",
+              "score": 0.901
+            },
+            {
+              "class": "fish",
+              "score": 0.96
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.961
+            },
+            {
+              "class": "animal",
+              "score": 0.961
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/goldfish",
+              "class": "goldfish",
+              "score": 0.573
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/damselfish",
+              "class": "damselfish",
+              "score": 0.53
+            },
+            {
+              "class": "reddish orange color",
+              "score": 0.92
+            },
+            {
+              "class": "Indian red color",
+              "score": 0.657
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/dbb77717647c46b20efd96281ad1e0f725adddc1d539a82122e31110.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/cichlid fish",
+              "class": "cichlid fish",
+              "score": 0.891
+            },
+            {
+              "class": "fish",
+              "score": 0.947
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.947
+            },
+            {
+              "class": "animal",
+              "score": 0.947
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/piranha",
+              "class": "piranha",
+              "score": 0.53
+            },
+            {
+              "class": "orange color",
+              "score": 0.914
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/e91e65b8a290551c13781e60d15e81519af7b1531b48e308cbd5a0dc.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/sweeper",
+              "class": "sweeper",
+              "score": 0.607
+            },
+            {
+              "class": "fish",
+              "score": 0.75
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.751
+            },
+            {
+              "class": "animal",
+              "score": 0.751
+            },
+            {
+              "type_hierarchy": "/nature/ridge/coral reef",
+              "class": "coral reef",
+              "score": 0.571
+            },
+            {
+              "class": "ridge",
+              "score": 0.571
+            },
+            {
+              "class": "nature",
+              "score": 0.571
+            },
+            {
+              "class": "air bubble",
+              "score": 0.531
+            },
+            {
+              "class": "bubble",
+              "score": 0.534
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blacktip shark",
+              "class": "blacktip shark",
+              "score": 0.53
+            },
+            {
+              "class": "shark",
+              "score": 0.554
+            },
+            {
+              "class": "black color",
+              "score": 0.955
+            },
+            {
+              "class": "coal black color",
+              "score": 0.785
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/eae2ea373f56c02058638b24b8e3159afa5245f386cc67dc638a5e20.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic mammal/whale/bottlenose dolphin",
+              "class": "bottlenose dolphin",
+              "score": 0.886
+            },
+            {
+              "class": "dolphin",
+              "score": 0.927
+            },
+            {
+              "class": "whale",
+              "score": 0.967
+            },
+            {
+              "class": "aquatic mammal",
+              "score": 0.968
+            },
+            {
+              "class": "mammal",
+              "score": 0.968
+            },
+            {
+              "class": "animal",
+              "score": 0.968
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/bottle-nosed whale",
+              "class": "bottle-nosed whale",
+              "score": 0.571
+            },
+            {
+              "class": "azure color",
+              "score": 0.726
+            },
+            {
+              "class": "coal black color",
+              "score": 0.643
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/fa1ac1345a006847e2fdb2646a382b5f2415eab55950733dcedcfc1d.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.943
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.987
+            },
+            {
+              "class": "turtle",
+              "score": 0.987
+            },
+            {
+              "class": "reptile",
+              "score": 0.987
+            },
+            {
+              "class": "animal",
+              "score": 0.987
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/ridley turtle",
+              "class": "ridley turtle",
+              "score": 0.554
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/green turtle",
+              "class": "green turtle",
+              "score": 0.53
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images0.zip/Images0/fd6a7cf226ae0350c704d9198061526d807c3bb6ddcb70aa265265b6.jpg"
+    }
+  ],
+  "custom_classes": 0,
+  "images_processed": 18
+}{
+  "images": [
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/invertebrate/starfish",
+              "class": "starfish",
+              "score": 0.989
+            },
+            {
+              "class": "invertebrate",
+              "score": 0.989
+            },
+            {
+              "class": "animal",
+              "score": 0.989
+            },
+            {
+              "class": "orange color",
+              "score": 0.851
+            },
+            {
+              "class": "reddish orange color",
+              "score": 0.69
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/04aee05a4c4f6374e01295428ef3eb1f96b1c1a7c4dda63dc1065b0a.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish",
+              "class": "fish",
+              "score": 0.857
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.858
+            },
+            {
+              "class": "animal",
+              "score": 0.858
+            },
+            {
+              "type_hierarchy": "/nature/ridge/coral reef",
+              "class": "coral reef",
+              "score": 0.623
+            },
+            {
+              "class": "ridge",
+              "score": 0.623
+            },
+            {
+              "class": "nature",
+              "score": 0.623
+            },
+            {
+              "class": "benthos (bottom of sea and litoral)",
+              "score": 0.53
+            },
+            {
+              "class": "lemon yellow color",
+              "score": 0.929
+            },
+            {
+              "class": "yellow color",
+              "score": 0.829
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/08cc27b88c4b8ef9dcf855d82e892d411c79000a76762023254cfd00.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic mammal/whale",
+              "class": "whale",
+              "score": 0.93
+            },
+            {
+              "class": "aquatic mammal",
+              "score": 0.952
+            },
+            {
+              "class": "mammal",
+              "score": 0.952
+            },
+            {
+              "class": "animal",
+              "score": 0.952
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/sperm whale",
+              "class": "sperm whale",
+              "score": 0.588
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/dolphin/killer whale",
+              "class": "killer whale",
+              "score": 0.557
+            },
+            {
+              "class": "dolphin",
+              "score": 0.56
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/cetacean mammal",
+              "class": "cetacean mammal",
+              "score": 0.541
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/baleen whale",
+              "class": "baleen whale",
+              "score": 0.53
+            },
+            {
+              "class": "azure color",
+              "score": 0.976
+            },
+            {
+              "class": "blue color",
+              "score": 0.774
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/0f684d8168e812387d3ed753eba40916c17c1daf174bc8caed676572.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.844
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.962
+            },
+            {
+              "class": "turtle",
+              "score": 0.966
+            },
+            {
+              "class": "reptile",
+              "score": 0.967
+            },
+            {
+              "class": "animal",
+              "score": 0.967
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/loggerhead turtle",
+              "class": "loggerhead turtle",
+              "score": 0.717
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/ridley turtle",
+              "class": "ridley turtle",
+              "score": 0.53
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/3cd189a60edc4d28e5b86af05a165460245ad6cea3e428028ba7e25b.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/grunt",
+              "class": "grunt",
+              "score": 0.794
+            },
+            {
+              "class": "fish",
+              "score": 0.912
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.912
+            },
+            {
+              "class": "animal",
+              "score": 0.912
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/porkfish",
+              "class": "porkfish",
+              "score": 0.566
+            },
+            {
+              "class": "sea green color",
+              "score": 0.954
+            },
+            {
+              "class": "lemon yellow color",
+              "score": 0.717
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/3e329e24f695bc8ab073b6beb80ddc369f240e5add2cf3b60627e2aa.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/scorpaenoid/lionfish",
+              "class": "lionfish",
+              "score": 0.992
+            },
+            {
+              "class": "scorpaenoid",
+              "score": 0.992
+            },
+            {
+              "class": "fish",
+              "score": 0.992
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.992
+            },
+            {
+              "class": "animal",
+              "score": 0.992
+            },
+            {
+              "class": "chestnut color",
+              "score": 0.961
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/4b38cd2bab8ca5570510a8821282ddb5ec7738d2c70745fa836609d7.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/hawksbill turtle",
+              "class": "hawksbill turtle",
+              "score": 0.84
+            },
+            {
+              "class": "sea turtle",
+              "score": 0.957
+            },
+            {
+              "class": "turtle",
+              "score": 0.958
+            },
+            {
+              "class": "reptile",
+              "score": 0.958
+            },
+            {
+              "class": "animal",
+              "score": 0.958
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/loggerhead turtle",
+              "class": "loggerhead turtle",
+              "score": 0.641
+            },
+            {
+              "type_hierarchy": "/animal/reptile/sea turtle/ridley turtle",
+              "class": "ridley turtle",
+              "score": 0.53
+            },
+            {
+              "class": "sea green color",
+              "score": 1.0
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/4d7bffbb91b35d2c4251caa18041aa090a1a95400a4bbde7629779b1.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/parrotfish",
+              "class": "parrotfish",
+              "score": 0.605
+            },
+            {
+              "class": "fish",
+              "score": 0.899
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.901
+            },
+            {
+              "class": "animal",
+              "score": 0.901
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blue shark",
+              "class": "blue shark",
+              "score": 0.602
+            },
+            {
+              "class": "shark",
+              "score": 0.774
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/grouper",
+              "class": "grouper",
+              "score": 0.564
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/shark/sand tiger",
+              "class": "sand tiger",
+              "score": 0.53
+            },
+            {
+              "class": "blue color",
+              "score": 0.902
+            },
+            {
+              "class": "purplish blue color",
+              "score": 0.822
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/61d86c294cf4582fad9d04ce4ba142036051b5f775d55cc50b9dc97d.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/reptile/cooter turtle",
+              "class": "cooter turtle",
+              "score": 0.782
+            },
+            {
+              "class": "turtle",
+              "score": 0.988
+            },
+            {
+              "class": "reptile",
+              "score": 0.988
+            },
+            {
+              "class": "animal",
+              "score": 0.988
+            },
+            {
+              "type_hierarchy": "/animal/reptile/box turtle",
+              "class": "box turtle",
+              "score": 0.734
+            },
+            {
+              "type_hierarchy": "/animal/reptile/yellow-bellied terrapin turtle",
+              "class": "yellow-bellied terrapin turtle",
+              "score": 0.694
+            },
+            {
+              "type_hierarchy": "/animal/reptile/Western box turtle",
+              "class": "Western box turtle",
+              "score": 0.53
+            },
+            {
+              "class": "sea green color",
+              "score": 0.856
+            },
+            {
+              "class": "olive green color",
+              "score": 0.798
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/6b8e53a46ced2f16ac4fc197a99f3df44384c1112d3f21b3608f3b91.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/dogfish/whitetip shark",
+              "class": "whitetip shark",
+              "score": 0.969
+            },
+            {
+              "class": "dogfish",
+              "score": 0.969
+            },
+            {
+              "class": "shark",
+              "score": 0.97
+            },
+            {
+              "class": "fish",
+              "score": 0.97
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.97
+            },
+            {
+              "class": "animal",
+              "score": 0.97
+            },
+            {
+              "class": "azure color",
+              "score": 0.931
+            },
+            {
+              "class": "blue color",
+              "score": 0.647
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/7b304739476d1d4f775c69305c6a632164ed0c70f19014a4f93db7bf.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/water sport/swimming/floating",
+              "class": "floating",
+              "score": 0.864
+            },
+            {
+              "class": "swimming",
+              "score": 0.924
+            },
+            {
+              "class": "water sport",
+              "score": 0.929
+            },
+            {
+              "class": "sport",
+              "score": 0.929
+            },
+            {
+              "class": "azure color",
+              "score": 0.969
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/7cd34abd593f02783416e32869d2fcf0297afcd0fb2b6bab82896fe2.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blue shark",
+              "class": "blue shark",
+              "score": 0.693
+            },
+            {
+              "class": "shark",
+              "score": 0.946
+            },
+            {
+              "class": "fish",
+              "score": 0.946
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.946
+            },
+            {
+              "class": "animal",
+              "score": 0.946
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/bull shark",
+              "class": "bull shark",
+              "score": 0.636
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blacktip shark",
+              "class": "blacktip shark",
+              "score": 0.606
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/dogfish/whitetip shark",
+              "class": "whitetip shark",
+              "score": 0.53
+            },
+            {
+              "class": "dogfish",
+              "score": 0.54
+            },
+            {
+              "class": "blue color",
+              "score": 0.795
+            },
+            {
+              "class": "steel blue color",
+              "score": 0.705
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/8238cf758b56f9d30142a47081bf27fb62bbb5654225246db5ee9bda.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blue shark",
+              "class": "blue shark",
+              "score": 0.745
+            },
+            {
+              "class": "shark",
+              "score": 0.94
+            },
+            {
+              "class": "fish",
+              "score": 0.94
+            },
+            {
+              "class": "aquatic vertebrate",
+              "score": 0.94
+            },
+            {
+              "class": "animal",
+              "score": 0.94
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/blacktip shark",
+              "class": "blacktip shark",
+              "score": 0.721
+            },
+            {
+              "type_hierarchy": "/animal/aquatic vertebrate/fish/sandbar shark",
+              "class": "sandbar shark",
+              "score": 0.53
+            },
+            {
+              "class": "blue color",
+              "score": 0.924
+            },
+            {
+              "class": "ultramarine color",
+              "score": 0.705
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/95e6d70fc4cdb815deef53746e64a5afe27a37de728c87a69b182474.jpg"
+    },
+    {
+      "classifiers": [
+        {
+          "name": "default",
+          "classifier_id": "default",
+          "classes": [
+            {
+              "type_hierarchy": "/animal/aquatic mammal/manatee",
+              "class": "manatee",
+              "score": 0.873
+            },
+            {
+              "class": "aquatic mammal",
+              "score": 0.994
+            },
+            {
+              "class": "mammal",
+              "score": 0.994
+            },
+            {
+              "class": "animal",
+              "score": 0.994
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/sea cow",
+              "class": "sea cow",
+              "score": 0.8
+            },
+            {
+              "type_hierarchy": "/animal/aquatic mammal/dugong (sea mammal)",
+              "class": "dugong (sea mammal)",
+              "score": 0.604
+            },
+            {
+              "class": "sea green color",
+              "score": 0.952
+            },
+            {
+              "class": "alabaster color",
+              "score": 0.859
+            }
+          ]
+        }
+      ],
+      "image": "../seasaw/frames/Images1.zip/Images1/9c2302eca143d00f211d3cd6a4bf01eae150e4cf44764c11adbe9375.jpg"
+    }
+  ],
+  "custom_classes": 0,
+  "images_processed": 14
+}
