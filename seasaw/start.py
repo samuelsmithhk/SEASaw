@@ -10,6 +10,9 @@ from seasaw.datasource.datasourceinterface import HealthCheckHandler
 from seasaw.datasource.datasourceinterface import ResultQueryHandler
 from seasaw.datasource.datasourceinterface import ResultGetterHandler
 
+from seasaw.frmaes.imagedownload import ImageDownload
+
+
 root = os.path.dirname(__file__)
 print(root)
 
@@ -34,11 +37,11 @@ def main():
         print("Data Source Interface listening on port " + str(port))
 
     elif process_id <= len(inventory.ports) * 0.6:
-        # indexer threads
-        print("todo - indexer")
+        # Indexer threads
+        print("todo - todo index server")
     else:
         # frontend threads
-        print("todo - todo frontend")
+        print("todo - todo frontend server")
 
     IOLoop.current().start()
 
