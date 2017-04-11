@@ -1,57 +1,62 @@
-import requests
-import urllib.request
-import mechanicalsoup 
-from bs4 import BeautifulSoup
+from tornado.ioloop import IOLoop
+import tornado.ioloop
+import tornado.web
+from tornado import gen, httpclient
+from optparse import OptionParser
+from datetime import datetime, date, time, timedelta
+import time
 from urllib.parse import urlparse
 import hashlib
+import os
+import requests
+import urllib.request
 
-def searchPic(term):
-    img_list = getPic(term)
-    if len(img_list)>0:
-        for img in img_list:
-            savePic(img)
-    print ("done...")     
-
-def getPic (search):
-    search = search.replace(" ","%20")
-    try:
-        browser = mechanicalsoup.StatefulBrowser()
-        #browser.set_verbose(2)
-        #browser.set_handle_robots(False)
-        #browser.addheaders = [('User-agent','Mozilla')]
-
-        htmltext = browser.open("http://www.omgmix.com/2012/07/top-27-sea-animals-wallpapers-in-hd.html")
-        #print (htmltext)
-        img_urls = []
-        formatted_images = []
-        soup = BeautifulSoup(htmltext.text)
-        results = soup.findAll("img")
-        for r in results:
-            try:
-                if ".jpg" in r['src']:
-                    #print (r['src'])
-                    img_urls.append(r['src'])
-            except:
-                a=0
-
-        #for im in img_urls:
-            #refer_url = urlparse(str(im))
-            #image_f = refer_url.query.split("&")[0].replace("imgurl=","")
-            #formatted_images.append(image_f)
-        
-        #return  formatted_images
-        return img_urls
-    except:
-        return []
+@gen.coroutine
+def main():
+    parser = OptionParser()
+    inDate = datetime.now()
+    endDate = inDate + timedelta(days=-10)
+    parser.add_option("-m", "--start", dest="start" default=inDate.strftime("%y%m%d%H%M%S"))
+    parser.add_option("-r", "--end", dest="end" default=endDate.strftime("%y%m%d%H%M%S"))
+    parser.add_option("-j", "--pagination", dest="pagination", default=100)
+    parser.add_option("-n", "--page", dest="page" default=1)
+    (opts, args) = parser.parse_args()
+    
+    #Get video dataset
+    httpclient.AsyncHTTPClient.configure(None, defaults={'connect_timeout': 300, 'request_timeout': 300})
+    http = httpclient.AsyncHTTPClient()
+    destination = "http://192.168.33.10:25280/results?" + "start=" + opts.start + \
+                            "&end=" + opts.end + \
+                            "&pagination=" + opts.pagination + \
+                            "&page=" + opts.page
+    request = tornado.httpclient.HTTPRequest(destination)
+    response = yield http.fetch(request)
+    results = ast.literal_eval(response.body)
+    video_ids = results["results"]
+    
+    #Video Processing
+    tasks = []
+    for id in video_ids:
+        destination = "http://192.168.33.10:25280/results/" + str(id)
+        tasks.append(http.fetch(destination))
+    responses = yield tasks
+    video_information = ast.literal_eval(responses.body)
+    frame_urls = video_information["frames"]
+    
+    #Frame Processing
+    for frame in frame_urls:
+        savePic(frame)
 
 def savePic(url):
     hs = hashlib.sha224(str(url).encode()).hexdigest()
     file_extension = url.split(".")[-1]
     uri = ""
     dest = uri+hs+"."+file_extension
-    print (dest)
+    #print (dest)
     try:
         urllib.request.urlretrieve(url,dest)
     except:
         print ("save failed") 
-searchPic("sea animals") 
+        
+if __name__ == '__main__':
+    IOLoop.current().run_sync(main) 
