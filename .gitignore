@@ -96,3 +96,5 @@ ENV/
 
 # MAC
 .DS_Store
+
+SEASaw-*.json

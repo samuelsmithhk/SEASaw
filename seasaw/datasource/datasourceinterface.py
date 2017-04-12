@@ -4,6 +4,7 @@ import random
 import json
 
 from tornado.web import RequestHandler
+from .database import dao
 
 
 def fake_id_generator():
@@ -17,11 +18,10 @@ class HealthCheckHandler(RequestHandler):
 
 class ResultQueryHandler(RequestHandler):
     def get(self):
-        # TODO: This is mocked data
-        start = self.get_argument("start", "000000000000000")
-        end = self.get_argument("end", "201231125959999")
+        start = self.get_argument("start", "1460489589")
+        end = self.get_argument("end", "1586719989")
         pagination = int(self.get_argument("pagination", "10"))
-        page = int(self.get_argument("page", "-1"))
+        page = int(self.get_argument("page", "0"))
 
         query_results = {}
 
@@ -30,10 +30,12 @@ class ResultQueryHandler(RequestHandler):
         for i in range(0, pagination):
             results.append(fake_id_generator())
 
+        results = dao.results_query(start, end, pagination, page)
+
         query_results["results"] = results
         query_results["pagination"] = pagination
         query_results["page"] = page
-        query_results["count"] = random.randint(0, 10000)
+        query_results["count"] = len(results)
 
         self.write(json.dumps(query_results))
 
@@ -42,16 +44,5 @@ class ResultGetterHandler(RequestHandler):
     def get(self, result_id):
         # TODO:This is mocked data
 
-        result = {}
-        result["result_id"] = result_id
-        result["video_title"] = "Fake title"
-        result["video_url"] = "http://www.thisafakeurl.com/videovideovideo"
-        result["frames"] = [
-            "frame1",
-            "frame2",
-            "frame3",
-            "frame4",
-            "frame5"
-        ]
-
+        result = dao.result_id_query(result_id)
         self.write(json.dumps(result))
