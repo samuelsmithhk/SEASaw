@@ -10,9 +10,6 @@ from seasaw.datasource.datasourceinterface import HealthCheckHandler
 from seasaw.datasource.datasourceinterface import ResultQueryHandler
 from seasaw.datasource.datasourceinterface import ResultGetterHandler
 
-from seasaw.frmaes.imagedownload import ImageDownload
-
-
 root = os.path.dirname(__file__)
 print(root)
 
