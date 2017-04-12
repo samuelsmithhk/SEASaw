@@ -10,7 +10,7 @@ import hashlib
 import os
 import requests
 import urllib.request
-from seasaw import inventory
+from . import inventory
 
 def savePic(url):
     hs = hashlib.sha224(str(url).encode()).hexdigest()
@@ -37,16 +37,19 @@ class ImageDownload:
         (opts, args) = parser.parse_args()
     
         #Get video dataset
+        data_output = []
         httpclient.AsyncHTTPClient.configure(None, defaults={'connect_timeout': 300, 'request_timeout': 300})
         http = httpclient.AsyncHTTPClient()
-        #TODO using 2 datastore servers 
-        destination = "http://192.168.33.10:25280/results?" + "start=" + opts.start + \
+        for i in range(0,inventory.DATA_PARTITIONS):
+            destination = DATA_SERVERS[i] + "/results?" + "start=" + opts.start + \
                             "&end=" + opts.end + \
                             "&pagination=" + opts.pagination + \
                             "&page=" + opts.page
-        request = tornado.httpclient.HTTPRequest(destination)
-        response = yield http.fetch(request)
-        results = ast.literal_eval(response.body)
+            request = tornado.httpclient.HTTPRequest(destination)
+            response = yield http.fetch(request)
+            results = ast.literal_eval(response.body)
+            data_output.append(results)
+        
         video_ids = results["results"]
     
         #Video Processing

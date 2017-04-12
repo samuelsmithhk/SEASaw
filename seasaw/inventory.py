@@ -13,7 +13,6 @@ DATA_SERVERS = []
 for i in range(0,DATA_PARTITIONS):
     DATA_SERVERS.append('http://192.168.33.10:' + str(ports[i]))
 
-
 INDEX_PARTITION = 2
 INDEX_SERVERS = []
 for i in range(0,INDEX_PARTITION):

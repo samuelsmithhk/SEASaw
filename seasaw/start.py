@@ -12,9 +12,6 @@ from seasaw.datasource.datasourceinterface import ResultGetterHandler
 from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
 
-# from seasaw.frames import ImageDownload
-
-
 def main():
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
