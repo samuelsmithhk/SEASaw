@@ -70,7 +70,7 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
    config.vm.provision "shell", inline: "
      sudo apt-get update
-     sudo apt-get install -y git python-pip python-dev build-essential zip
+     sudo apt-get install -y git python3-pip python3-dev build-essential zip
      sudo apt-get -y autoremove
      
      echo downloading cloud proxy
@@ -83,7 +83,7 @@ Vagrant.configure("2") do |config|
      
      
      cd /vagrant
-         sudo pip install -r requirements.txt
-     echo pip install complete
+         sudo pip3 install -r requirements.txt
+     echo pip3 install complete
      "
 end

@@ -1,4 +1,5 @@
 import argparse
+import time
 
 from tornado import process
 from tornado.web import Application
@@ -12,6 +13,9 @@ from seasaw.datasource.datasourceinterface import ResultGetterHandler
 from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
 
+from seasaw.visualRecognition.visualRecognition import Indexer
+
+
 def main():
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
@@ -23,10 +27,9 @@ def main():
     else:
         proxy.start(args.gca_credentials_path)
         dao.init(args.database_password)
-
-
+        
     # spin up component APIs
-
+    
     process_id = process.fork_processes(len(inventory.ports), max_restarts=0)
 
     if process_id <= len(inventory.ports) * 0.3:
@@ -39,19 +42,22 @@ def main():
                 (r"/(.*)", StaticFileHandler,
                 {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
             ])
-
+            
             port = inventory.ports[process_id]
             instance.listen(port)
-
+            
             print("Data Source Interface listening on port " + str(port))
 
-    elif process_id <= len(inventory.ports) * 0.6:
-        # Indexer threads
-        print("todo - todo index server")
     else:
-        # frontend threads
-        print("todo - todo frontend server")
-
+        if process_id <= len(inventory.ports) * 0.6: 
+            # Index server threads
+            print("todo - todo index server")
+        else:
+            # frontend threads
+            print("todo - todo frontend server") 
+            
+    Indexer('seasaw/frames')    
+    
     IOLoop.current().start()
 
 if __name__ == "__main__":

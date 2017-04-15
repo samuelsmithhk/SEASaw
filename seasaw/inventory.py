@@ -2,10 +2,10 @@
 ports = [
     25280,  # datasource
     25281,  # datasource
-    25282,  # indexer
-    25283,  # indexer
+    25282,  # index server
+    25283,  # index server
     25284,  # frontend
-    25285,  # frontend
+    25285,  # indexer
 ]
 
 DATA_PARTITIONS = 2
