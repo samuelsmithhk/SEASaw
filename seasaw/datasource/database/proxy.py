@@ -11,10 +11,11 @@ def start(credential_path):
 
     while True:
         line = proxy.stdout.readline()
-        if line != '':
-            if "Ready for new connections" in line:
+        if len(line) > 5:
+            print(line)
+            if "Ready for new connections" in line.decode():
                 print("Proxy established")
                 break
-            elif "bind" in line:
+            elif "bind" in line.decode():
                 print("Proxy was already running")
                 break
