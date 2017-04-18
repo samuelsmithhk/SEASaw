@@ -13,9 +13,6 @@ from seasaw.datasource.datasourceinterface import ResultGetterHandler
 from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
 
-from seasaw.visualRecognition.visualRecognition import Indexer
-
-
 def main():
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
@@ -29,9 +26,8 @@ def main():
         dao.init(args.database_password)
         
     # spin up component APIs
-    
     process_id = process.fork_processes(len(inventory.ports), max_restarts=0)
-
+    
     if process_id <= len(inventory.ports) * 0.3:
         # video frame sequence extractor threads
         if (args.gca_credentials_path is not None) and (args.database_password is not None):
@@ -54,9 +50,7 @@ def main():
             print("todo - todo index server")
         else:
             # frontend threads
-            print("todo - todo frontend server") 
-            
-    Indexer('seasaw/frames')    
+            print("todo - todo frontend server")    
     
     IOLoop.current().start()
 
