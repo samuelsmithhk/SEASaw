@@ -70,7 +70,6 @@ class Indexer:
                         self.postings[term][video_id] = score
                     else:
                         self.postings[term][video_id] += score
-            
         
     def formVideos(self):
         self.videos = list()
