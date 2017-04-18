@@ -9,7 +9,6 @@ The project is designed to be easily deployable anywhere.
 - git - https://git-scm.com/downloads
 - virtualbox - https://www.virtualbox.org/wiki/VirtualBox
 - hashicorp vagrant - https://www.vagrantup.com/
-- watson-developer-cloud - Follow 'pip install --upgrade watson-developer-cloud'
 #### Steps
 
 - clone this repo
