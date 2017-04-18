@@ -17,17 +17,17 @@ from seasaw.visualRecognition.imagedownload import ImageDownload
 import os.path
 
 class Indexer:
-    def __init__(self, imagepath, picklefilepath):
+    def __init__(self, imagepath, picklefilepath, opts):
         #inDate = datetime.now()
         #endDate = inDate + timedelta(days=-1)
-        #if opts["start"] is None:
-        #    opts["start"] = inDate.strftime("%y%m%d%H%M%S")
-        #if opts["end"] is None:
-        #    opts["end"] = endDate.strftime("%y%m%d%H%M%S")
-        #if opts["pagination"] is None:
-        #    opts["pagination"] = 100
-        #if opts["page"] is None:
-        #    opts["page"] = 1
+        if opts["start"] is None:
+            opts["start"] = inDate.strftime("%y%m%d%H%M%S")
+        if opts["end"] is None:
+            opts["end"] = endDate.strftime("%y%m%d%H%M%S")
+        if opts["pagination"] is None:
+            opts["pagination"] = 100
+        if opts["page"] is None:
+            opts["page"] = 1
         
         ImageDownload(imagepath).run()
         
