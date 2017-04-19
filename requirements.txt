@@ -3,3 +3,5 @@ codecov==2.0.5
 tornado==4.4.3
 watson_developer_cloud
 pymysql
+pyvirtualdisplay
+selenium
