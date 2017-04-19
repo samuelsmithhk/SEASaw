@@ -95,5 +95,9 @@ Vagrant.configure("2") do |config|
      cd /vagrant
          sudo pip3 install -r requirements.txt
      echo pip3 install complete
+     
+     mkdir frames
+     mkdir pickleFiles
+     echo frmaes and pickleFiles directory created
      "
 end

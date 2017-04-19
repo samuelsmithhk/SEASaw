@@ -14,10 +14,10 @@ import requests
 import urllib.request
 from .. import inventory
 
-def savePic(url, filename):
+def savePic(url, path, filename):
     file_extension = url.split(".")[-1]
     uri = ""
-    dest = "seasaw/frames/" + filename + "."+file_extension
+    dest = path + "/" + filename + "."+file_extension
     try:
         urllib.request.urlretrieve(url,dest)
     except:
@@ -25,8 +25,8 @@ def savePic(url, filename):
     return dest
 
 class ImageDownload:
-    #def __init__(self):
-        #self.job_args = job_args
+    def __init__(self, path):
+        self.path = path
     
     @gen.coroutine
     def main(self):
@@ -35,16 +35,19 @@ class ImageDownload:
         httpclient.AsyncHTTPClient.configure(None, defaults={'connect_timeout': 300, 'request_timeout': 300})
         http = httpclient.AsyncHTTPClient()
         for i in range(0,inventory.DATA_PARTITIONS):
-            destination = inventory.DATA_SERVERS[i] + "/results" #+ \
+            try: 
+                destination = inventory.DATA_SERVERS[i] + "/results" #+ \
             #          "?" + "start=" + opts.start + \
             #                "&end=" + opts.end + \
             #                "&pagination=" + str(opts.pagination) + \
             #                "&page=" + str(opts.page)
-            print ("Fetching data: " + str(destination))
-            request = tornado.httpclient.HTTPRequest(destination)
-            response = yield http.fetch(request)
-            results = ast.literal_eval(response.body.decode("utf-8"))
-            video_ids.append(results["results"])
+                print ("Fetching data: " + str(destination))
+                request = tornado.httpclient.HTTPRequest(destination)
+                response = yield http.fetch(request)
+                results = ast.literal_eval(response.body.decode("utf-8"))
+                video_ids.append(results["results"])
+            except:
+                pass
             
         video_ids = [item for sublist in video_ids for item in sublist]
         
@@ -63,13 +66,13 @@ class ImageDownload:
             count = 1
             for frame in video_information["frames"]:
                 frame_url = "http://i.imgur.com/" + str(frame["url"])
-                savePic(frame_url, str(video_information["result_id"]) + "_" + str(count))
+                savePic(frame_url, self.path, str(video_information["result_id"]) + "_" + str(count))
                 count = count + 1
     
     def run(self):
         IOLoop.current().run_sync(self.main)
     
 if __name__ == '__main__':
-    ImageDownload().run()
+    ImageDownload('frames').run()
     
         

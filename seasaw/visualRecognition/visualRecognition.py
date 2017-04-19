@@ -13,40 +13,71 @@ from collections import defaultdict
 import hashlib
 import pickle
 import math
-from seasaw.frames.imagedownload import ImageDownload
+from seasaw.visualRecognition.imagedownload import ImageDownload
+import os.path
 
 class Indexer:
-    def __init__(self, path):
+    def __init__(self, imagepath, picklefilepath, opts):
         #inDate = datetime.now()
         #endDate = inDate + timedelta(days=-1)
-        #if opts["start"] is None:
-        #    opts["start"] = inDate.strftime("%y%m%d%H%M%S")
-        #if opts["end"] is None:
-        #    opts["end"] = endDate.strftime("%y%m%d%H%M%S")
-        #if opts["pagination"] is None:
-        #    opts["pagination"] = 100
-        #if opts["page"] is None:
-        #    opts["page"] = 1
+        if opts["start"] is None:
+            opts["start"] = inDate.strftime("%y%m%d%H%M%S")
+        if opts["end"] is None:
+            opts["end"] = endDate.strftime("%y%m%d%H%M%S")
+        if opts["pagination"] is None:
+            opts["pagination"] = 100
+        if opts["page"] is None:
+            opts["page"] = 1
         
-        ImageDownload().run()
-        self.videos = list()
+        ImageDownload(imagepath).run()
+        
+        intervedIndexfull = False
         self.INVERTED_INDEX = dict()
         for i in range(0,inventory.INDEX_PARTITION):
-            self.INVERTED_INDEX[i] = defaultdict(dict)
+            if os.path.isfile(picklefilepath + '/InvertedIndex' + str(i) +'.pickle'):
+                self.INVERTED_INDEX[i] = pickle.load(open(picklefilepath + '/InvertedIndex' + str(i) +'.pickle', 'rb'))
+                intervedIndexfull = True
+            else:
+                self.INVERTED_INDEX[i] = defaultdict(dict)
         
-        self.filenames = ['InvertedIndex' + str(i) +'.pickle' for i in range(0,inventory.INDEX_PARTITION)]
+        #print ("Printing defaultdict: " + str(self.INVERTED_INDEX))
+        self.filenames = [picklefilepath + '/InvertedIndex' + str(i) +'.pickle' for i in range(0,inventory.INDEX_PARTITION)]
         
-        self.postings = defaultdict(dict)
+        if not intervedIndexfull:
+            self.postings = defaultdict(dict)
+            self.videos = list()
+        else:
+            self.formPostings()
+            self.formVideos()
+            
         self.IDF = dict()
         
         self.results = dict()
-        self.checkZip(path)
-        self.formZip(path)
+        self.checkZip(imagepath)
+        self.formZip(imagepath)
         self.formInvertedIndex()
         self.formIDF()
         self.writeInvertedIndex()
-        self.writeIDF()
+        self.writeIDF(picklefilepath)
                 
+    
+    def formPostings(self):
+        self.postings = self.INVERTED_INDEX[0]
+        for i in range(1,inventory.INDEX_PARTITION):
+            for term, value in self.INVERTED_INDEX[i].items():
+                for video_id, score in value.items():
+                    if video_id not in self.postings[term]:
+                        self.postings[term][video_id] = score
+                    else:
+                        self.postings[term][video_id] += score
+        
+    def formVideos(self):
+        self.videos = list()
+        for term, value in self.postings.items():
+            for video_id, score in value.items():
+                if video_id not in self.videos:
+                    self.videos.append(video_id)
+        
     
     def writeInvertedIndex(self):
         indexpointer = 0
@@ -59,8 +90,8 @@ class Indexer:
             filename.close()
             #f.close()
     
-    def writeIDF(self):
-        with open('InverseDocumentFrequency.pickle', 'wb') as handle:
+    def writeIDF(self, picklefilepath):
+        with open(picklefilepath + '/IDF.pickle', 'wb') as handle:
             pickle.dump(self.IDF, handle, protocol=pickle.HIGHEST_PROTOCOL)
             handle.close()
     
@@ -76,12 +107,12 @@ class Indexer:
                     words = classes['classes'] 
                     for word in words:
                         tag = word['class']
-                        self.updateTermFrequency(tag, video_id)
                         if video_id not in self.INVERTED_INDEX[index_partition][tag]:
                             self.INVERTED_INDEX[index_partition][tag][video_id] = word['score']
                         else:
-                            self.INVERTED_INDEX[index_partition][tag][video_id] += word['score']     
-                
+                            self.INVERTED_INDEX[index_partition][tag][video_id] += word['score']       
+                        
+                        self.updateTermFrequency(tag, video_id, word['score'])
     
     def extractVideoId(self, data):
         for each in data:
@@ -89,11 +120,11 @@ class Indexer:
                 return each.split("_")[0]
          
     
-    def updateTermFrequency(self, tag, video_id):
+    def updateTermFrequency(self, tag, video_id, score):
         if video_id not in self.postings[tag]:
-            self.postings[tag][video_id] = 1
+            self.postings[tag][video_id] = score
         else:
-            self.postings[tag][video_id] += 1
+            self.postings[tag][video_id] += score
     
     def addVideoIds(self, video_id):
         if video_id not in self.videos:
@@ -111,6 +142,7 @@ class Indexer:
                 try:
                     taskId = hashlib.sha224(str(time.time()).encode()).hexdigest()
                     self.results[taskId] = visual_recognition.classify(images_file=open(path + "/" + files, 'rb'))
+                    print ("Processing existing zip file")
                     os.remove(path + "/" + files)
                 except Exception as e:
                     print (str(e))
@@ -130,6 +162,7 @@ class Indexer:
                         zipf.close()
                         taskId = hashlib.sha224(str(time.time()).encode()).hexdigest()
                         self.results[taskId] = visual_recognition.classify(images_file=open(path + '/Images.zip', 'rb'))
+                        print ("Processing zip file")
                         os.remove(path + '/Images.zip')
                         zipf = zipfile.ZipFile(path + '/Images.zip', 'w', zipfile.ZIP_DEFLATED)
                         zipf.write(os.path.join(path, files))
@@ -141,6 +174,7 @@ class Indexer:
                 zipf.close()
                 taskId = hashlib.sha224(str(time.time()).encode()).hexdigest()
                 self.results[taskId] = visual_recognition.classify(images_file=open(path + '/Images.zip', 'rb'))
+                print ("Processing zip file")
                 os.remove(path + '/Images.zip')   
     
         except Exception as e:
@@ -148,4 +182,4 @@ class Indexer:
 
 
 if __name__ == '__main__':
-    Indexer('seasaw/frames')   
+    Indexer('frames', 'pickleFiles')   
