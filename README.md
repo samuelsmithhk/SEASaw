@@ -18,7 +18,7 @@ The project is designed to be easily deployable anywhere.
 - cd into /vagrant
 - run command: 
 "python3 -m seasaw.start" and  
-	"python3 -m seasaw.Indexer"
+	"python3 -m seasaw.scheduler"
 
 If this is your first time running the project, vagrant up may take some time, as it will be downloading dependencies
 

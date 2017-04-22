@@ -9,15 +9,13 @@ def formOptions():
     global times
     opts = dict()
     if not times: #empty start and end
-        print ("Times are empty")
-        inDate = datetime.now()
-        endDate = inDate + timedelta(days=-1)
+        endDate = datetime.now()
+        inDate = endDate + timedelta(days=-1)
         times["start"] = list()
         times["start"].append(inDate)
         times["end"] = list()
         times["end"].append(endDate)
     else:
-        print (str(times["end"]))
         inDate = times["end"][len(times["end"]) - 1]
         endDate = datetime.now()
         times["start"].append(inDate)
@@ -25,6 +23,8 @@ def formOptions():
     
     start = inDate.strftime("%y%m%d%H%M%S")
     end = endDate.strftime("%y%m%d%H%M%S")
+    print ("Start time used: " + start)
+    print ("End time used: " + end)
     opts["start"] = start
     opts["end"] = end
     opts["pagination"] = 100
@@ -32,8 +32,9 @@ def formOptions():
     return opts
 
 def index():
+    global indexer
     opts = formOptions()
-    Indexer('frames', 'pickleFiles', opts)
+    indexer.formIndexer('frames', opts)
 
 
 def removeFiles(dir):
@@ -42,10 +43,28 @@ def removeFiles(dir):
         os.remove(dir + "/" + f)
 
 times = dict()
+indexer = Indexer('pickleFiles')
 if __name__ == '__main__':
     scheduler = BlockingScheduler()
+    
+    #Remove already existing files
     removeFiles('frames')
     removeFiles('pickleFiles')
+    
+    #Call Indexer
     index()
+    
+    #schedule index after intervals of 3 minutes
     scheduler.add_job(index, 'interval', minutes=3)
     scheduler.start() 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
