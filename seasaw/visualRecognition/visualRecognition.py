@@ -69,12 +69,18 @@ class Indexer:
         self.formInvertedIndex()
         self.formIDF()   
         
-        print ("Inverted Index: " + str(self.INVERTED_INDEX))
-        print ("\nIDF: " + str(self.IDF))
+        #print ("Inverted Index: " + str(self.INVERTED_INDEX))
+        #print ("\nIDF: " + str(self.IDF))
         
         if (len(self.videos) >= 1000):
             self.writeInvertedIndex()
             self.writeIDF(picklefilepath)
+            
+    def getInvertedIndex(self):
+        return self.INVERTED_INDEX
+        
+    def getIDF(self):
+        return self.IDF
     
     def formPostings(self):
         self.postings = self.INVERTED_INDEX[0]

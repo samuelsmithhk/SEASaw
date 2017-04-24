@@ -35,6 +35,8 @@ def index():
     global indexer
     opts = formOptions()
     indexer.formIndexer('frames', opts)
+    print (indexer.getInvertedIndex())
+    print (indexer.getIDF())
 
 
 def removeFiles(dir):
