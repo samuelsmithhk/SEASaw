@@ -8,6 +8,26 @@ ports = [
     25285,  # indexer
 ]
 
+search_terms = [
+    "puppy",
+    "panda",
+    "penguin",
+    "polar bear",
+    "kitten",
+    "bunny",
+    "elephant",
+    "lion",
+    "whale",
+    "shark",
+    "tortoise",
+    "giraffe",
+    "tiger",
+    "monkey",
+    "hippo",
+    "badger",
+    "bee"
+]
+
 DATA_PARTITIONS = 2
 DATA_SERVERS = []
 for i in range(0,DATA_PARTITIONS):

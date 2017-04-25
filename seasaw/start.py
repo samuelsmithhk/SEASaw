@@ -5,6 +5,7 @@ from tornado import process
 from tornado.web import Application
 from tornado.web import StaticFileHandler
 from tornado.ioloop import IOLoop
+from random import randint
 
 from seasaw import inventory
 from seasaw.datasource.datasourceinterface import HealthCheckHandler
@@ -12,45 +13,74 @@ from seasaw.datasource.datasourceinterface import ResultQueryHandler
 from seasaw.datasource.datasourceinterface import ResultGetterHandler
 from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
+from seasaw.datasource import scraper
+from seasaw.datasource import imguruploader
 
 def main():
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
+    parser.add_argument("--imgur_password", action="store", default=None, dest="imgur_password")
     args = parser.parse_args()
 
     if (args.gca_credentials_path is None) or (args.database_password is None):
-        print("Missing credential path or database password, datastore will not be loaded")
+        print("start - Missing credential path or database password, datastore will not be loaded")
     else:
         proxy.start(args.gca_credentials_path)
         dao.init(args.database_password)
-        
+
     # spin up component APIs
     process_id = process.fork_processes(len(inventory.ports), max_restarts=0)
-    
-    if process_id <= len(inventory.ports) * 0.3:
-        # video frame sequence extractor threads
-        if (args.gca_credentials_path is not None) and (args.database_password is not None):
-            instance = Application([
-                (r"/healthcheck", HealthCheckHandler),
-                (r"/results/(.*)", ResultGetterHandler),
-                (r"/results", ResultQueryHandler),
-                (r"/(.*)", StaticFileHandler,
-                {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
-            ])
-            
-            port = inventory.ports[process_id]
-            instance.listen(port)
-            
-            print("Data Source Interface listening on port " + str(port))
 
-    else:
-        if process_id <= len(inventory.ports) * 0.6: 
+    if process_id is 0:
+        print("start - initiating scraper")
+        # youtube scraper
+        for i in range(0, 5):
+            term_index = randint(0, len(inventory.search_terms))
+            term = inventory.search_terms[term_index]
+            print("start - setting scraper to find 10 results for " + term)
+            scraper.start(term, 10)
+
+        print("start - scraper finished")
+    elif process_id is 1:
+        #imgur uploader
+        if args.imgur_password is None:
+            print("start - imgur password not specified in program args, imgur component will not be launched")
+        else:
+            print("start - imgur uploader running")
+            while True:
+                result = imguruploader.upload(args.imgur_password)
+                if result is 1:
+                    print("start - rate limit exceeded, imgur component will pause for a bit")
+                    time.sleep(1800)
+                elif result is 2:
+                    print("start - nothing for imgur uploader to do, imgur component will pause for a bit")
+                    time.sleep(1800)
+    elif process_id is 2:
+        # database uploader
+        print("start - the database uploader is not yet implemented")
+    elif process_id > 2:
+        if process_id <= (len(inventory.ports) * 0.3) + 3:
+            # datasource api
+                instance = Application([
+                    (r"/healthcheck", HealthCheckHandler),
+                    (r"/results/(.*)", ResultGetterHandler),
+                    (r"/results", ResultQueryHandler),
+                    (r"/(.*)", StaticFileHandler,
+                     {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
+                ])
+
+                port = inventory.ports[process_id - 3]
+                instance.listen(port)
+
+                print("start - Data Source Interface listening on port " + str(port))
+
+        elif process_id <= (len(inventory.ports) * 0.6) + 3:
             # Index server threads
-            print("todo - todo index server")
+            print("start - todo - todo index server")
         else:
             # frontend threads
-            print("todo - todo frontend server")    
+            print("start - todo - todo frontend server")
     
     IOLoop.current().start()
 
