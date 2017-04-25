@@ -84,9 +84,11 @@ Vagrant.configure("2") do |config|
      mkdir /logs/geckodriver
      mkdir /datastore
      mkdir /datastore/captured_frames
+     mkdir /datastore/imgur_processed
      
      chmod 777 /logs/geckodriver
      chmod 777 /datastore/captured_frames
+     chmod 777 /datastore/imgur_processed
      
      wget https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
      tar -xzf geckodriver-v0.15.0-linux64.tar.gz -C /usr/bin
@@ -98,6 +100,6 @@ Vagrant.configure("2") do |config|
      
      mkdir frames
      mkdir pickleFiles
-     echo frmaes and pickleFiles directory created
+     echo frames and pickleFiles directory created
      "
 end

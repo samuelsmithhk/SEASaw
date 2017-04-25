@@ -1,31 +1,32 @@
 import time
 import queue
 import os
+import pickle
 
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
 
 # noinspection PyBroadException
-def start(seed):
-    print("Configuring environment")
+def start(seed, max_number_of_videos):
+    print("scraper - Configuring environment")
     display = Display(visible=0, size=(1024, 576))
     display.start()
 
     ffprofile = webdriver.FirefoxProfile()
     ffprofile.add_extension(extension='/vagrant/resources/abp.xpi')
 
-    print("Launching geckodriver")
-    driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver.log")
+    print("scraper - Launching geckodriver")
+    driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver_scraper.log")
 
-    print("Searching for " + seed)
+    print("scraper - Searching for " + seed)
     driver.get("https://www.youtube.com/results?search_query=" + seed)
 
     jobs = queue.Queue()
 
     results_list = driver.find_element_by_class_name("item-section")
 
-    print("Search complete")
+    print("scraper - Search complete")
 
     for result in results_list.find_elements_by_tag_name("li"):
         try:
@@ -36,24 +37,21 @@ def start(seed):
         except:
             continue
 
-    print(str(jobs.qsize()) + " results to process")
+    print("scraper - " + str(jobs.qsize()) + " results to process")
 
     jc = 0
+    success = 0
 
     while not jobs.empty():
         job = jobs.get()
         jc += 1
-        print("Processing result " + str(jc) + ": " + job[1])
+        print("scraper - Processing result " + str(jc) + ": " + job[1])
         video_id = job[0][job[0].find("=") + 1:]
 
         try:
             if video_id.find("list") != -1:
+                print("scraper - result is a playlist, skipping")
                 continue
-
-            if not os.path.exists("/datastore/captured_frames/" + video_id):
-                os.makedirs("/datastore/captured_frames/" + video_id)
-            else:
-                continue  # no point in processing a video twice
 
             driver.get("https://youtu.be/" + video_id)
 
@@ -68,8 +66,12 @@ def start(seed):
                     job = [a_tag.get_attribute("href"), a_tag.get_attribute("title")]
                     jobs.put(job)
 
-                print("Added 3 results. " + str(jobs.qsize()) + " results to process")
+                print("scraper - Added 3 results. " + str(jobs.qsize()) + " results to process")
 
+            if not os.path.exists("/datastore/captured_frames/" + video_id):
+                os.makedirs("/datastore/captured_frames/" + video_id)
+            else:
+                continue  # no point in processing a video twice
 
             video_length_string = driver.find_element_by_class_name("ytp-bound-time-right").get_attribute("innerText")
 
@@ -88,6 +90,7 @@ def start(seed):
             one_seventh = int(seconds / 7)
 
             attempt = 0
+            meta = {'title': job[1], 'url': job[0], 'frames': []}
             for i in range(1, 6):
                 try:
                     attempt += 1
@@ -103,25 +106,33 @@ def start(seed):
                     fs.click()
                     time.sleep(2)
                     driver.save_screenshot("/datastore/captured_frames/" + video_id + "/" + str(i) + ".jpg")
+                    meta['frames'].append((i, timestamp))
                 except:
                     if attempt <= 3:
                         i -= 1
                     else:
-                        print("Saving frame " + str(i) + " for video " + video_id + " failed 3 times, moving on")
+                        print("scraper - Saving frame " + str(i) + " for video " + video_id + " failed 3 times, moving on")
                     driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver.log")
                     continue
 
                 if attempt > 1:
-                    print("Frame " + str(i) + " for video " + video_id
+                    print("scraper - Frame " + str(i) + " for video " + video_id
                           + " was successfully saved after " + str(attempt) + " attempts")
 
-                attempt = 0
-        except:
-            print("Video " + video_id + " failed, taking a breather and will try id later")
+                    attempt = 0
+
+            pickle.dump(meta, open("/datastore/captured_frames/" + video_id + "/meta", "wb"))
+
+            success += 1
+            print("scraper - Sucessfully scraped " + video_id + ", "
+                  + str(success) + " of " + str(max_number_of_videos))
+            if success >= max_number_of_videos:
+                print("scraper - Scraper finished task")
+                break
+        except Exception as e:
+            print(e)
+            print("scraper - Video " + video_id + " failed, taking a breather and will try id later")
             jobs.put(job)
             time.sleep(5)
             driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver.log")
             continue
-
-
-start("puppy")

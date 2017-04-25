@@ -6,3 +6,4 @@ pymysql
 pyvirtualdisplay
 selenium
 apscheduler
+imgurpython
