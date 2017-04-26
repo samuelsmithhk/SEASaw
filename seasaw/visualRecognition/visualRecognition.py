@@ -57,24 +57,29 @@ class Indexer:
         if opts["end"] is None:
             opts["end"] = endDate.strftime("%y%m%d%H%M%S")
         if opts["pagination"] is None:
-            opts["pagination"] = 100
+            opts["pagination"] = 1
         if opts["page"] is None:
             opts["page"] = 1
         
         self.results = dict()
         ImageDownload(imagepath, opts, self.videos).run()
         
+        self.checkPNGImages(imagepath)
         self.checkZip(imagepath)
         self.formZip(imagepath)
         self.formInvertedIndex()
-        self.formIDF()   
-        
-        #print ("Inverted Index: " + str(self.INVERTED_INDEX))
-        #print ("\nIDF: " + str(self.IDF))
+        self.formIDF() 
         
         if (len(self.videos) >= 1000):
             self.writeInvertedIndex()
-            self.writeIDF(picklefilepath)
+            self.writeIDF()
+            self.INVERTED_INDEX = dict()
+            self.postings = defaultdict(dict)
+            self.videos = list()
+            self.IDF = dict()
+            
+            for i in range(0,inventory.INDEX_PARTITION):
+                self.INVERTED_INDEX[i] = defaultdict(dict)
             
     def getInvertedIndex(self):
         return self.INVERTED_INDEX
@@ -103,7 +108,7 @@ class Indexer:
     def writeInvertedIndex(self):
         indexpointer = 0
         for filename in self.filenames:
-            filename = open(str(filename), 'wb')
+            filename = open(str(filename), 'ab')
             #f = open('temp' + str(indexpointer), 'w')
             #f.write(str(self.INVERTED_INDEX[indexpointer]))
             pickle.dump(self.INVERTED_INDEX[indexpointer], filename, protocol=pickle.HIGHEST_PROTOCOL)
@@ -112,7 +117,7 @@ class Indexer:
             #f.close()
     
     def writeIDF(self):
-        with open(self.IDFfile, 'wb') as handle:
+        with open(self.IDFfile, 'ab') as handle:
             pickle.dump(self.IDF, handle, protocol=pickle.HIGHEST_PROTOCOL)
             handle.close()
     
@@ -120,30 +125,36 @@ class Indexer:
         for key, value in self.results.items():
             images = value["images"]   
             for each in images:
-                video_id = int(self.extractVideoInfo(each["image"].split("/"), "id"))
-                video_title = self.extractVideoInfo(each["image"].split("/"), "title")
-                self.addVideoIds(video_id)
-                index_partition = int(hashlib.md5(str(video_id).encode()).hexdigest()[:8], 16) % inventory.INDEX_PARTITION
-                classifiers = each['classifiers']
-                self.addVideoTitleInvertedIndex(video_title.lower(), index_partition, video_id, 10)
-                for classes in classifiers:
-                    words = classes['classes'] 
-                    for word in words:
-                        tag = word['class'].split(" ")
-                        for term in tag:
-                            term = term.lower()
-                            if video_id not in self.INVERTED_INDEX[index_partition][term]:
-                                title_bonus = self.checkTitle(video_title, term)
-                                self.INVERTED_INDEX[index_partition][term][video_id] = word['score'] + title_bonus
-                            else:
-                                self.INVERTED_INDEX[index_partition][term][video_id] += word['score']       
+                if 'classifiers' in each: 
+                    video_id = int(self.extractVideoInfo(each["image"].split("/"), "id"))
+                    video_title = self.extractVideoInfo(each["image"].split("/"), "title")
+                    self.addVideoIds(video_id)
+                    index_partition = int(hashlib.md5(str(video_id).encode()).hexdigest()[:8], 16) % inventory.INDEX_PARTITION
+                    classifiers = each['classifiers']
+                    self.addVideoTitleInvertedIndex(video_title.lower(), index_partition, video_id, 10)
+                    for classes in classifiers:
+                        words = classes['classes'] 
+                        for word in words:
+                            tag = word['class'].split(" ")
+                            for term in tag:
+                                term = term.lower()
+                                if video_id not in self.INVERTED_INDEX[index_partition][term]:
+                                    title_bonus = self.checkTitle(video_title, term)
+                                    self.INVERTED_INDEX[index_partition][term][video_id] = word['score'] + title_bonus
+                                else:
+                                    self.INVERTED_INDEX[index_partition][term][video_id] += word['score']       
                         
-                            self.updateTermFrequency(term, video_id, word['score'])
+                                self.updateTermFrequency(term, video_id, word['score'])
                 
     
     def extractVideoInfo(self, data, info):
         for each in data:
             if ".jpg" in each:
+                if "id" in info:
+                    return each.split("|")[1]
+                else:
+                    return each.split("|")[0]
+            elif ".png" in each:
                 if "id" in info:
                     return each.split("|")[1]
                 else:
@@ -179,6 +190,22 @@ class Indexer:
         for term in self.postings:
             self.IDF[term] = math.log10(len(self.videos)/ float(len(self.postings[term])))
     
+    
+    def checkPNGImages(self, path):
+        visual_recognition = VisualRecognitionV3('2016-05-20', api_key='2165f1c705d401d4ca563e98dd25d52792d2f2d0')
+        #json.dump(visual_recognition.classify(images_file=open(path + '/63db58a5ccc044c20da38c92393008bda55bbf8832970cbe47a8c854.jpg', 'rb')), f, indent=2)
+        for files in os.listdir(path):
+            if files.endswith('.png'):
+                try:
+                    taskId = hashlib.sha224(str(time.time()).encode()).hexdigest()
+                    self.results[taskId] = visual_recognition.classify(images_file=open(path + "/" + files, 'rb'))
+                    print ("Processing existing png file")
+                    os.remove(os.path.join(path, files))
+                    time.sleep(10) #Sleep for 10 seconds so as to avoid connection failure
+                except Exception as e:
+                    print (str(e))
+    
+    
     def checkZip(self, path):
         visual_recognition = VisualRecognitionV3('2016-05-20', api_key='2165f1c705d401d4ca563e98dd25d52792d2f2d0')
         #json.dump(visual_recognition.classify(images_file=open(path + '/63db58a5ccc044c20da38c92393008bda55bbf8832970cbe47a8c854.jpg', 'rb')), f, indent=2)
@@ -189,6 +216,7 @@ class Indexer:
                     self.results[taskId] = visual_recognition.classify(images_file=open(path + "/" + files, 'rb'))
                     print ("Processing existing zip file")
                     os.remove(path + "/" + files)
+                    time.sleep(10) #Sleep for 10 seconds so as to avoid connection failure
                 except Exception as e:
                     print (str(e))
 
@@ -216,6 +244,12 @@ class Indexer:
                         os.remove(os.path.join(path, files))
                         count = 1
                         processed = False
+                elif files.endswith('.png'):
+                    taskId = hashlib.sha224(str(time.time()).encode()).hexdigest()
+                    self.results[taskId] = visual_recognition.classify(images_file=open(path + '/' + files, 'rb'))
+                    print ("Processing png image")
+                    os.remove(os.path.join(path, files))
+                    time.sleep(10) #Sleep for 10 seconds so as to avoid connection failure
     
             #If any image is still left to be processes
             if processed:

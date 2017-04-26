@@ -23,11 +23,11 @@ def formOptions():
     
     start = inDate.strftime("%y%m%d%H%M%S")
     end = endDate.strftime("%y%m%d%H%M%S")
-    print ("Start time used: " + start)
-    print ("End time used: " + end)
+    #print ("Start time used: " + start)
+    #print ("End time used: " + end)
     opts["start"] = start
     opts["end"] = end
-    opts["pagination"] = 100
+    opts["pagination"] = 1
     opts["page"] = 1
     return opts
 
@@ -35,8 +35,8 @@ def index():
     global indexer
     opts = formOptions()
     indexer.formIndexer('frames', opts)
-    print (indexer.getInvertedIndex())
-    print (indexer.getIDF())
+    #print (indexer.getInvertedIndex())
+    #print (indexer.getIDF())
 
 
 def removeFiles(dir):

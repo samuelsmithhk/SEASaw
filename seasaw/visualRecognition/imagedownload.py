@@ -13,6 +13,7 @@ import ast
 import requests
 import urllib.request
 from .. import inventory
+import multiprocessing
 
 def savePic(url, path, filename):
     file_extension = url.split(".")[-1]
@@ -20,8 +21,8 @@ def savePic(url, path, filename):
     dest = path + "/" + filename + "."+file_extension
     try:
         urllib.request.urlretrieve(url,dest)
-    except:
-        print ("save failed") 
+    except Exception as e:
+        print ("save failed" + str(e)) 
     return dest
 
 class ImageDownload:
@@ -57,7 +58,9 @@ class ImageDownload:
         server_id = 0
         for id in video_ids:
             if id not in self.videosProcessed:
-                destination = inventory.DATA_SERVERS[(server_id) % len(inventory.DATA_SERVERS)] + "/results/" + str(id)
+                if server_id >= inventory.DATA_PARTITIONS:
+                    server_id = 0
+                destination = inventory.DATA_SERVERS[server_id] + "/results/" + str(id)
                 print ("Fetching video information: " + str(destination))
                 tasks.append(http.fetch(destination))
                 server_id += 1
@@ -68,10 +71,17 @@ class ImageDownload:
             for response in responses:
                 video_information = ast.literal_eval(response.body.decode("utf-8"))
                 count = 1
+                jobs = []
                 for frame in video_information["frames"]:
-                    frame_url = "http://i.imgur.com/" + str(frame["url"])
-                    savePic(frame_url, self.path, str(video_information["video_title"]) + "|" + str(video_information["result_id"]) + "|" + str(count))
-                    count = count + 1
+                    if len(frame["url"]) > 0:
+                        frame_url = "http://i.imgur.com/" + str(frame["url"])
+                        filename = str(video_information["video_title"]) + "|" + str(video_information["result_id"]) + "|" + str(count)
+                        p = multiprocessing.Process(target=savePic, args=(frame_url, self.path, filename))
+                        #savePic(frame_url, self.path, filename)
+                        jobs.append(p)
+                        p.start()
+                        p.join()
+                        count = count + 1
     
     def run(self):
         IOLoop.current().run_sync(self.main)
