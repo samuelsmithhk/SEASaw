@@ -63,7 +63,7 @@ def main():
         # database uploader
         print("start - initiating database uploader")
         while True:
-            result = datasourceuploader.start()
+            datasourceuploader.start()
             time.sleep(30)
     elif process_id > 2:
         if process_id <= (len(inventory.ports) * 0.3) + 3:
