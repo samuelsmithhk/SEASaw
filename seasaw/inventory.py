@@ -25,7 +25,16 @@ search_terms = [
     "monkey",
     "hippo",
     "badger",
-    "bee"
+    "bee",
+    "ant",
+    "fox",
+    "dolphin",
+    "koala",
+    "snake",
+    "pig",
+    "cow",
+    "sheep",
+    "horse"
 ]
 
 DATA_PARTITIONS = 2

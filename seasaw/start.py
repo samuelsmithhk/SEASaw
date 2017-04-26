@@ -1,5 +1,6 @@
 import argparse
 import time
+import pymysql
 
 from tornado import process
 from tornado.web import Application
@@ -15,6 +16,8 @@ from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
 from seasaw.datasource import scraper
 from seasaw.datasource import imguruploader
+from seasaw.datasource import datasourceuploader
+
 
 def main():
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
@@ -30,7 +33,7 @@ def main():
         dao.init(args.database_password)
 
     # spin up component APIs
-    process_id = process.fork_processes(len(inventory.ports), max_restarts=0)
+    process_id = process.fork_processes(len(inventory.ports), max_restarts=1)
 
     if process_id is 0:
         print("start - initiating scraper")
@@ -49,16 +52,19 @@ def main():
         else:
             print("start - imgur uploader running")
             while True:
-                result = imguruploader.upload(args.imgur_password)
+                result = imguruploader.start(args.imgur_password)
                 if result is 1:
-                    print("start - rate limit exceeded, imgur component will pause for a bit")
-                    time.sleep(1800)
+                    print("start - rate limit exceeded, imgur component will pause for a while")
+                    time.sleep(120)
                 elif result is 2:
-                    print("start - nothing for imgur uploader to do, imgur component will pause for a bit")
-                    time.sleep(1800)
+                    print("start - nothing for imgur uploader to do, imgur component will pause for a while")
+                    time.sleep(120)
     elif process_id is 2:
         # database uploader
-        print("start - the database uploader is not yet implemented")
+        print("start - initiating database uploader")
+        while True:
+            result = datasourceuploader.start()
+            time.sleep(30)
     elif process_id > 2:
         if process_id <= (len(inventory.ports) * 0.3) + 3:
             # datasource api

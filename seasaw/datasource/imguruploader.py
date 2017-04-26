@@ -9,13 +9,13 @@ from imgurpython import ImgurClient
 client_id = "d770cc9eea99c6f"
 
 
-def upload(password):
+def start(password):
     imgur_client = ImgurClient(client_id, password)
 
-    if imgur_client.credits['UserRemaining'] is '0':
+    if imgur_client.credits['UserRemaining'] is 0:
         return 1
 
-    videos = os.listdir("/datastore/captured_frames/")  # TODO: filter on those that contain meta file
+    videos = os.listdir("/datastore/captured_frames/")
     videos = [video for video in videos if os.path.exists("/datastore/captured_frames/" + video + "/meta")]
 
     for video in videos:
@@ -38,7 +38,7 @@ def upload(password):
                 print("imguruploader - Uploading frame " + str(i) + " for " + video)
                 result = imgur_client.upload_from_path(frame_path)
                 result_url = result['link']
-                urls[i] = result_url
+                urls[i] = result_url[19:]
                 time.sleep(90)
 
         pickle.dump(urls, open("/datastore/imgur_processed/" + video + "/frame_urls", "wb"))
