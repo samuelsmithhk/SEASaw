@@ -5,6 +5,7 @@ import pickle
 
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from .database import dao
 
 
 # noinspection PyBroadException
@@ -20,7 +21,13 @@ def start(seed, max_number_of_videos):
     driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver_scraper.log")
 
     print("scraper - Searching for " + seed)
-    driver.get("https://www.youtube.com/results?search_query=" + seed)
+    try:
+        driver.get("https://www.youtube.com/results?search_query=" + seed)
+    except Exception as e:
+        print(e)
+        print("scraper - search failed, taking a breather and will start scraper later")
+        time.sleep(5)
+        start(seed, max_number_of_videos)
 
     jobs = queue.Queue()
 
@@ -28,45 +35,72 @@ def start(seed, max_number_of_videos):
 
     print("scraper - Search complete")
 
+    video_ids = []
+
     for result in results_list.find_elements_by_tag_name("li"):
         try:
             title_element = result.find_element_by_class_name("yt-lockup-title")
             a_tag = title_element.find_element_by_tag_name("a")
-            job = [a_tag.get_attribute("href"), a_tag.get_attribute("title")]
+            url = a_tag.get_attribute("href")
+            video_id = url[url.find("=") + 1:]
+
+            if video_id.find("list") != -1 or video_id.find("user") != -1 or video_id.find("channel") != -1:
+                print("scraper - result isn't a video, skipping")
+                continue
+
+            job = [video_id, a_tag.get_attribute("title")]
+            video_ids.append(video_id)
             jobs.put(job)
         except:
             continue
 
     print("scraper - " + str(jobs.qsize()) + " results to process")
 
-    jc = 0
+    print("scraper - checking database for duplicates")
+    block_list = dao.which_results_exist(video_ids)
+
     success = 0
 
     while not jobs.empty():
         job = jobs.get()
-        jc += 1
-        print("scraper - Processing result " + str(jc) + ": " + job[1])
-        video_id = job[0][job[0].find("=") + 1:]
+        print("scraper - Processing video " + job[1])
+        video_id = job[0]
 
         try:
-            if video_id.find("list") != -1:
-                print("scraper - result is a playlist, skipping")
+            if video_id.find("list") != -1 or video_id.find("user") != -1 or video_id.find("channel") != -1:
+                print("scraper - result isn't a video, skipping")
                 continue
 
             driver.get("https://youtu.be/" + video_id)
 
             # add top 3 related videos to job queue - if queue diminishing
             if jobs.qsize() < 50:
+                video_ids = []
                 related_videos = driver.find_element_by_id("watch-related")
                 related_list = related_videos.find_elements_by_class_name("related-list-item-compact-video")
 
-                for v in range(0, 3):
+                for v in range(0, 5):
                     video = related_list[v].find_element_by_class_name("content-wrapper")
                     a_tag = video.find_element_by_tag_name("a")
-                    job = [a_tag.get_attribute("href"), a_tag.get_attribute("title")]
+                    url = a_tag.get_attribute("href")
+                    video_id = url[url.find("=") + 1:]
+
+                    if video_id.find("list") != -1 or video_id.find("user") != -1:
+                        print("scraper - result isn't a video, skipping")
+                        continue
+
+                    job = [video_id, a_tag.get_attribute("title")]
+                    video_ids.append(video_id)
                     jobs.put(job)
 
-                print("scraper - Added 3 results. " + str(jobs.qsize()) + " results to process")
+                print("scraper - used video page to find some more potential candidate videos")
+
+                print("scraper - checking new videos against database for duplicates")
+                block_list.extend(dao.which_results_exist(video_ids))
+
+            if video_id in block_list:
+                print("scraper - processed video " + video_id + " in the past")
+                continue
 
             if not os.path.exists("/datastore/captured_frames/" + video_id):
                 os.makedirs("/datastore/captured_frames/" + video_id)
@@ -96,17 +130,19 @@ def start(seed, max_number_of_videos):
                     attempt += 1
                     timestamp = one_seventh * i
                     if timestamp < 60:
-                        driver.get("https://youtu.be/" + video_id + "?t=" + str(timestamp) + "s")
+                        timestamp_string = str(timestamp) + "s"
+                        driver.get("https://youtu.be/" + video_id + "?t=" + timestamp_string)
                     else:
                         m = str(int(timestamp / 60))
                         s = str(timestamp % 60)
-                        driver.get("https://youtu.be/" + video_id + "?t=" + str(m) + "m" + str(s) + "s")
+                        timestamp_string = str(m) + "m" + str(s) + "s"
+                        driver.get("https://youtu.be/" + video_id + "?t=" + timestamp_string)
 
                     fs = driver.find_element_by_class_name("ytp-fullscreen-button")
                     fs.click()
                     time.sleep(2)
                     driver.save_screenshot("/datastore/captured_frames/" + video_id + "/" + str(i) + ".jpg")
-                    meta['frames'].append((i, timestamp))
+                    meta['frames'].append((i, timestamp_string))
                 except:
                     if attempt <= 3:
                         i -= 1

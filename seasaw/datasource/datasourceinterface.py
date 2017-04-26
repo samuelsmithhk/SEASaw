@@ -1,15 +1,9 @@
 # This class will provide the RESTful interface for the data source
-import string
-import random
 import json
 
 from tornado.web import RequestHandler
 from .database import dao
 
-
-def fake_id_generator():
-    chars = string.ascii_letters + string.digits
-    return "".join(random.choice(chars) for _ in range(5))
 
 class HealthCheckHandler(RequestHandler):
     def get(self):
@@ -25,11 +19,6 @@ class ResultQueryHandler(RequestHandler):
 
         query_results = {}
 
-        results = []
-
-        for i in range(0, pagination):
-            results.append(fake_id_generator())
-
         results = dao.results_query(start, end, pagination, page)
 
         query_results["results"] = results
@@ -42,7 +31,5 @@ class ResultQueryHandler(RequestHandler):
 
 class ResultGetterHandler(RequestHandler):
     def get(self, result_id):
-        # TODO:This is mocked data
-
         result = dao.result_id_query(result_id)
         self.write(json.dumps(result))

@@ -1,4 +1,5 @@
 import pymysql
+import time
 
 
 database_password = ""
@@ -11,8 +12,8 @@ def init(_database_password):
 
 def results_query(start, end, pagination, page):
     sql = "SELECT result_ts FROM results WHERE result_ts > %s AND result_ts <= %s LIMIT %s OFFSET %s;"
-    sql_result = (0,)
-    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb")
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
 
     if pagination > 100:
         pagination = 100
@@ -26,7 +27,6 @@ def results_query(start, end, pagination, page):
     finally:
         connection.close()
 
-    # (1491943465, 'Cockapoo puppies', 'yk0KNJLhaT0', '33IGHlg.jpg', '0:35', '8FnnXvF.jpg', '1:10', 'hlAJiUQ.png', '1:45', 'uPiO83z.png', '2:20', 'WeNuCwy.jpg', '2:49')
     results = []
     for row in sql_result:
         results.append(row[0])
@@ -36,8 +36,8 @@ def results_query(start, end, pagination, page):
 
 def result_id_query(result_id):
     sql = "SELECT * FROM results WHERE result_ts = %s;"
-    sql_result = (0,)
-    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb")
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
 
     try:
         with connection.cursor() as cursor:
@@ -46,17 +46,89 @@ def result_id_query(result_id):
     finally:
         connection.close()
 
-    result = {}
-    result["result_id"] = result_id
-    result["video_title"] = sql_result[1]
-    result["video_url"] = sql_result[2]
+    result = {"result_id": result_id, "video_title": sql_result[1], "video_url": sql_result[2]}
 
-    frames = []
-    frames.append({"url": sql_result[3], "timestamp": sql_result[4]})
-    frames.append({"url": sql_result[5], "timestamp": sql_result[6]})
-    frames.append({"url": sql_result[7], "timestamp": sql_result[8]})
-    frames.append({"url": sql_result[9], "timestamp": sql_result[10]})
-    frames.append({"url": sql_result[11], "timestamp": sql_result[12]})
+    frames = [{"url": sql_result[3], "timestamp": sql_result[4]}, {"url": sql_result[5], "timestamp": sql_result[6]},
+              {"url": sql_result[7], "timestamp": sql_result[8]}, {"url": sql_result[9], "timestamp": sql_result[10]},
+              {"url": sql_result[11], "timestamp": sql_result[12]}]
 
     result["frames"] = frames
     return result
+
+
+def which_results_exist(results):
+    format_strings = ','.join(['%s'] * len(results))
+    sql = "SELECT video_url FROM results WHERE video_url IN (%s);"
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql % format_strings, tuple(results))
+            sql_result = cursor.fetchall()
+    finally:
+        connection.close()
+
+    return list(sql_result)
+
+
+def insert_result(result):
+    # (('result_ts', 'int(11)', 'NO', 'PRI', None, ''), ('video_title', 'varchar(255)', 'YES', '', None, ''),
+    #  ('video_url', 'varchar(255)', 'YES', '', None, ''), ('frame1_url', 'varchar(255)', 'YES', '', None, ''),
+    #  ('frame1_time', 'varchar(6)', 'YES', '', None, ''), ('frame2_url', 'varchar(255)', 'YES', '', None, ''),
+    #  ('frame2_time', 'varchar(6)', 'YES', '', None, ''), ('frame3_url', 'varchar(255)', 'YES', '', None, ''),
+    #  ('frame3_time', 'varchar(6)', 'YES', '', None, ''), ('frame4_url', 'varchar(255)', 'YES', '', None, ''),
+    #  ('frame4_time', 'varchar(6)', 'YES', '', None, ''), ('frame5_url', 'varchar(255)', 'YES', '', None, ''),
+    #  ('frame5_time', 'varchar(6)', 'YES', '', None, ''))
+
+    result_ts = int(time.time())
+    video_title = result["video_title"]
+    video_url = result["video_url"]
+
+    frame1_url = ""
+    frame1_time = ""
+    frame2_url = ""
+    frame2_time = ""
+    frame3_url = ""
+    frame3_time = ""
+    frame4_url = ""
+    frame4_time = ""
+    frame5_url = ""
+    frame5_time = ""
+
+    if len(result["frames"]) > 0:
+        frame1_url = result["frames"][0]["url"]
+        frame1_time = result["frames"][0]["timestamp"]
+
+    if len(result["frames"]) > 1:
+        frame2_url = result["frames"][1]["url"]
+        frame2_time = result["frames"][1]["timestamp"]
+
+    if len(result["frames"]) > 2:
+        frame3_url = result["frames"][2]["url"]
+        frame3_time = result["frames"][2]["timestamp"]
+
+    if len(result["frames"]) > 3:
+        frame4_url = result["frames"][3]["url"]
+        frame4_time = result["frames"][3]["timestamp"]
+
+    if len(result["frames"]) > 4:
+        frame5_url = result["frames"][4]["url"]
+        frame5_time = result["frames"][4]["timestamp"]
+
+    sql = "INSERT INTO results VALUES (" + str(result_ts) + ", %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql, (video_title, video_url, frame1_url, frame1_time, frame2_url, frame2_time, frame3_url,
+                                 frame3_time, frame4_url, frame4_time, frame5_url, frame5_time))
+            connection.commit()
+            sql_result = cursor.fetchall()
+    finally:
+        connection.close()
+
+    print(sql_result)
+    print("dao - insert of video " + video_url + " complete")
