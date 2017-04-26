@@ -43,10 +43,12 @@ def main():
             term = inventory.search_terms[term_index]
             print("start - setting scraper to find 10 results for " + term)
             scraper.start(term, 10)
+            print("start - resting scraper")
+            time.sleep(3600)
 
         print("start - scraper finished")
     elif process_id is 1:
-        #imgur uploader
+        # imgur uploader
         if args.imgur_password is None:
             print("start - imgur password not specified in program args, imgur component will not be launched")
         else:
@@ -65,28 +67,24 @@ def main():
         while True:
             datasourceuploader.start()
             time.sleep(30)
-    elif process_id > 2:
-        if process_id <= (len(inventory.ports) * 0.3) + 3:
-            # datasource api
-                instance = Application([
-                    (r"/healthcheck", HealthCheckHandler),
-                    (r"/results/(.*)", ResultGetterHandler),
-                    (r"/results", ResultQueryHandler),
-                    (r"/(.*)", StaticFileHandler,
-                     {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
-                ])
+    elif process_id is 2 or process_id is 3:
+        # datasource api
+        instance = Application([
+            (r"/healthcheck", HealthCheckHandler),
+            (r"/results/(.*)", ResultGetterHandler),
+            (r"/results", ResultQueryHandler),
+            (r"/(.*)", StaticFileHandler,
+             {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
+        ])
 
-                port = inventory.ports[process_id - 3]
-                instance.listen(port)
+        port = inventory.ports[process_id - 3]
+        instance.listen(port)
 
-                print("start - Data Source Interface listening on port " + str(port))
+        print("start - Data Source Interface listening on port " + str(port))
 
-        elif process_id <= (len(inventory.ports) * 0.6) + 3:
-            # Index server threads
-            print("start - todo - todo index server")
-        else:
-            # frontend threads
-            print("start - todo - todo frontend server")
+    else:
+        # Index server threads
+        print(str(process_id) + " reserved for front-end / indexer")
     
     IOLoop.current().start()
 

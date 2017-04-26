@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-     vb.memory = "1024"
+     vb.memory = "2048"
      vb.cpus = 2
    end
    
@@ -90,8 +90,8 @@ Vagrant.configure("2") do |config|
      chmod 777 /datastore/captured_frames
      chmod 777 /datastore/imgur_processed
      
-     wget https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
-     tar -xzf geckodriver-v0.15.0-linux64.tar.gz -C /usr/bin
+     wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz
+     tar -xzf geckodriver-v0.16.1-linux64.tar.gz -C /usr/bin
     
      echo permissions running pip install
      cd /vagrant
