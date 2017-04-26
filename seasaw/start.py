@@ -33,7 +33,7 @@ def main():
         dao.init(args.database_password)
 
     # spin up component APIs
-    process_id = process.fork_processes(len(inventory.ports), max_restarts=1)
+    process_id = process.fork_processes(len(inventory.ports), max_restarts=100)
 
     if process_id is 0:
         print("start - initiating scraper")
