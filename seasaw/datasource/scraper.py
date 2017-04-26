@@ -14,11 +14,8 @@ def start(seed, max_number_of_videos):
     display = Display(visible=0, size=(1024, 576))
     display.start()
 
-    ffprofile = webdriver.FirefoxProfile()
-    ffprofile.add_extension(extension='/vagrant/resources/abp.xpi')
-
     print("scraper - Launching geckodriver")
-    driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver_scraper.log")
+    driver = webdriver.Firefox(log_path="/logs/geckodriver/geckodriver_scraper.log")
 
     print("scraper - Searching for " + seed)
     try:
@@ -114,7 +111,7 @@ def start(seed, max_number_of_videos):
             if video_length_string.count(":") == 1:  # minutes
                 m_str = video_length_string[0: video_length_string.find(":")]
                 minutes = int(m_str)
-            elif video_length_string(":") == 2:  # hours, we'll just skip these videos
+            elif video_length_string.count(":") == 2:  # hours, we'll just skip these videos
                 continue
 
             s_str = video_length_string[-2:]
@@ -148,7 +145,7 @@ def start(seed, max_number_of_videos):
                         i -= 1
                     else:
                         print("scraper - Saving frame " + str(i) + " for video " + video_id + " failed 3 times, moving on")
-                    driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver.log")
+                    driver = webdriver.Firefox(log_path="/logs/geckodriver/geckodriver.log")
                     continue
 
                 if attempt > 1:
@@ -170,5 +167,5 @@ def start(seed, max_number_of_videos):
             print("scraper - Video " + video_id + " failed, taking a breather and will try id later")
             jobs.put(job)
             time.sleep(5)
-            driver = webdriver.Firefox(firefox_profile=ffprofile, log_path="/logs/geckodriver/geckodriver.log")
+            driver = webdriver.Firefox(log_path="/logs/geckodriver/geckodriver.log")
             continue
