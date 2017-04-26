@@ -35,11 +35,11 @@ def start(password):
         for i in range(1, 6):
             frame_path = "/datastore/captured_frames/" + video + "/" + str(i) + ".jpg"
             if os.path.exists(frame_path):
+                time.sleep(30)  # because of rate limits
                 print("imguruploader - Uploading frame " + str(i) + " for " + video)
                 result = imgur_client.upload_from_path(frame_path)
                 result_url = result['link']
                 urls[i] = result_url[19:]
-                time.sleep(90)
 
         pickle.dump(urls, open("/datastore/imgur_processed/" + video + "/frame_urls", "wb"))
         shutil.rmtree("/datastore/captured_frames/" + video)
