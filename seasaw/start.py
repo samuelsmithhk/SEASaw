@@ -67,7 +67,7 @@ def main():
         while True:
             datasourceuploader.start()
             time.sleep(30)
-    elif process_id is 2 or process_id is 3:
+    elif process_id is 3 or process_id is 4:
         # datasource api
         instance = Application([
             (r"/healthcheck", HealthCheckHandler),
