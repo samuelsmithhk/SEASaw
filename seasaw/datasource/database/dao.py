@@ -73,14 +73,6 @@ def which_results_exist(results):
 
 
 def insert_result(result):
-    # (('result_ts', 'int(11)', 'NO', 'PRI', None, ''), ('video_title', 'varchar(255)', 'YES', '', None, ''),
-    #  ('video_url', 'varchar(255)', 'YES', '', None, ''), ('frame1_url', 'varchar(255)', 'YES', '', None, ''),
-    #  ('frame1_time', 'varchar(6)', 'YES', '', None, ''), ('frame2_url', 'varchar(255)', 'YES', '', None, ''),
-    #  ('frame2_time', 'varchar(6)', 'YES', '', None, ''), ('frame3_url', 'varchar(255)', 'YES', '', None, ''),
-    #  ('frame3_time', 'varchar(6)', 'YES', '', None, ''), ('frame4_url', 'varchar(255)', 'YES', '', None, ''),
-    #  ('frame4_time', 'varchar(6)', 'YES', '', None, ''), ('frame5_url', 'varchar(255)', 'YES', '', None, ''),
-    #  ('frame5_time', 'varchar(6)', 'YES', '', None, ''))
-
     result_ts = int(time.time())
     video_title = result["video_title"]
     video_url = result["video_url"]
@@ -130,5 +122,4 @@ def insert_result(result):
     finally:
         connection.close()
 
-    print(sql_result)
     print("dao - insert of video " + video_url + " complete")
