@@ -73,6 +73,7 @@ def which_results_exist(results):
 
 
 def insert_result(result):
+    time.sleep(1) #to help ensure unique epoch timestamps
     result_ts = int(time.time())
     video_title = result["video_title"]
     video_url = result["video_url"]

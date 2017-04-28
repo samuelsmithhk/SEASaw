@@ -20,15 +20,15 @@ def start(seed, max_number_of_videos):
     print("scraper - Searching for " + seed)
     try:
         driver.get("https://www.youtube.com/results?search_query=" + seed)
+        jobs = queue.Queue()
+        results_list = driver.find_element_by_class_name("item-section")
     except Exception as e:
         print(e)
         print("scraper - search failed, taking a breather and will start scraper later")
         time.sleep(5)
         start(seed, max_number_of_videos)
 
-    jobs = queue.Queue()
 
-    results_list = driver.find_element_by_class_name("item-section")
 
     print("scraper - Search complete")
 
