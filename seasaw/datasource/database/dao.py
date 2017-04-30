@@ -124,3 +124,42 @@ def insert_result(result):
         connection.close()
 
     print("dao - insert of video " + video_url + " complete")
+
+
+def insert_processed_videos(videoInfo):
+    time.sleep(1) #to help ensure unique epoch timestamps
+    result_id = videoInfo["result_id"]
+    tags = videoInfo["tags"]
+    tags = ','.join(map(str, tags))
+
+    sql = "INSERT INTO processed_videos VALUES (%s, %s);"
+
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql, (result_id, tags))
+            connection.commit()
+            sql_result = cursor.fetchall()
+    finally:
+        connection.close()
+
+    print("dao - insert of result_id " + videoInfo["result_id"] + " complete")
+
+
+def select_processed_videos():
+    sql = "SELECT result_id FROM processed_videos;"
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+            sql_result = [item[0] for item in cursor.fetchall()]
+    finally:
+        connection.close()
+
+    
+    return list(sql_result)
+

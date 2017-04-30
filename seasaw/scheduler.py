@@ -1,16 +1,17 @@
 from datetime import datetime, date, time, timedelta
-import os
+import os, argparse
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-
-from seasaw.visualRecognition.visualRecognition import Indexer
+from seasaw.datasource.database import proxy
+from seasaw.datasource.database import dao
+from seasaw.visualRecognition.indexer import Indexer
 
 def formOptions():
     global times
     opts = dict()
     if not times: #empty start and end
         endDate = datetime.now()
-        inDate = endDate + timedelta(days=-1)
+        inDate = endDate + timedelta(days=-100)
         times["start"] = list()
         times["start"].append(inDate)
         times["end"] = list()
@@ -23,12 +24,10 @@ def formOptions():
     
     start = inDate.strftime("%y%m%d%H%M%S")
     end = endDate.strftime("%y%m%d%H%M%S")
-    #print ("Start time used: " + start)
-    #print ("End time used: " + end)
     opts["start"] = start
     opts["end"] = end
-    opts["pagination"] = 1
-    opts["page"] = 1
+    opts["pagination"] = 10000
+    opts["page"] = 0
     return opts
 
 def index():
@@ -45,20 +44,35 @@ def removeFiles(dir):
         os.remove(dir + "/" + f)
 
 times = dict()
-indexer = Indexer('pickleFiles')
-if __name__ == '__main__':
-    scheduler = BlockingScheduler()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
+    parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
+    parser.add_argument("--database_password", action="store", default=None, dest="database_password")
+    args = parser.parse_args()
     
-    #Remove already existing files
-    removeFiles('frames')
-    removeFiles('pickleFiles')
+    if (args.gca_credentials_path is None) or (args.database_password is None):
+        print("start - Missing credential path or database password, datastore will not be loaded")
+    else:
+        proxy.start(args.gca_credentials_path)
+        dao.init(args.database_password)
     
-    #Call Indexer
-    index()
+    try:
+        scheduler = BlockingScheduler()
+        indexer = Indexer('pickleFiles')
+        
+        #Remove already existing files
+        removeFiles('frames')
+        
+        #Call Indexer
+        index()
     
-    #schedule index after intervals of 3 minutes
-    scheduler.add_job(index, 'interval', minutes=3)
-    scheduler.start() 
+        #schedule index after intervals of 3 minutes
+        scheduler.add_job(index, 'interval', minutes=10)
+        scheduler.start() 
+        
+    except Exception as e:
+        print (str(e))
     
     
     

@@ -23,6 +23,8 @@ from seasaw.frontend.frontendinterface import Web
 from seasaw.frontend.frontendinterface import IndexDotHTMLAwareStaticFileHandler
 from seasaw.frontend.frontendinterface import SearchHandler
 
+#import seasaw.scheduler 
+
 SETTINGS = {'static_path': inventory.WEBAPP_PATH,
             'template_path':inventory.WEBAPP_PATH }
 

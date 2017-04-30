@@ -6,7 +6,6 @@ from optparse import OptionParser
 from datetime import datetime, date, time, timedelta
 import time
 from urllib.parse import urlparse
-#from urlparse import urlparse
 import hashlib
 import os
 import ast
@@ -31,6 +30,18 @@ class ImageDownload:
         self.videosProcessed = videosProcessed
         self.opts = opts
     
+    def getVideos(self, video_ids):
+        videos = []
+        count = 25
+        for id in video_ids:
+            if len(videos) <= count:
+                videos.append(id)
+            else:
+                break
+        
+        #videos.remove(1493312192)
+        return videos
+    
     @gen.coroutine
     def main(self):
         #Get video dataset
@@ -38,11 +49,11 @@ class ImageDownload:
         httpclient.AsyncHTTPClient.configure(None, defaults={'connect_timeout': 300, 'request_timeout': 300})
         http = httpclient.AsyncHTTPClient()
         try: 
-            destination = inventory.DATA_SERVERS[0] + "/results" #+ \
-            #          "?" + "start=" + self.opts["start"] + \
-            #                "&end=" + self.opts["end"] + \
-            #                "&pagination=" + str(self.opts["pagination"]) + \
-            #                "&page=" + str(self.opts["page"])
+            destination = inventory.DATA_SERVERS[0] + "/results" + \
+                      "?" + "&pagination=" + str(self.opts["pagination"]) #+ \
+                         # + "start=" + self.opts["start"] + \
+                         #   "&end=" + self.opts["end"] + \
+                         #   "&page=" + str(self.opts["page"])
             print ("Fetching data: " + str(destination))
             request = tornado.httpclient.HTTPRequest(destination)
             response = yield http.fetch(request)
@@ -52,6 +63,8 @@ class ImageDownload:
             pass
             
         video_ids = [int(item) for sublist in video_ids for item in sublist]
+        #Limit to 3 videos for processing
+        video_ids = self.getVideos(video_ids)
         
         #Video Frame Processing
         tasks = []
