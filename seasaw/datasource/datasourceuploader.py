@@ -5,7 +5,7 @@ import shutil
 from .database import dao
 
 
-def start():g
+def start():
     videos = os.listdir("/datastore/imgur_processed/")
     videos = [video for video in videos if os.path.exists("/datastore/imgur_processed/" + video + "/frame_urls")]
 
