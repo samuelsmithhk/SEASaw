@@ -35,22 +35,28 @@ def results_query(start, end, pagination, page):
 
 
 def result_id_query(result_id):
-    sql = "SELECT * FROM results WHERE result_ts = %s;"
+    sql1 = "SELECT * FROM results WHERE result_ts = %s;"
+    sql2 = "SELECT tags FROM processed_videos WHERE result_id = %s;"
     connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
                                  charset="utf8mb4")
 
     try:
         with connection.cursor() as cursor:
-            cursor.execute(sql, result_id)
-            sql_result = cursor.fetchone()
+            cursor.execute(sql1, result_id)
+            sql1_result = cursor.fetchone()
+            cursor.execute(sql2, result_id)
+            sql2_result = cursor.fetchone()
     finally:
         connection.close()
 
-    result = {"result_id": result_id, "video_title": sql_result[1], "video_url": sql_result[2]}
+    result = {"result_id": result_id, "video_title": sql1_result[1], "video_url": sql1_result[2]}
 
-    frames = [{"url": sql_result[3], "timestamp": sql_result[4]}, {"url": sql_result[5], "timestamp": sql_result[6]},
-              {"url": sql_result[7], "timestamp": sql_result[8]}, {"url": sql_result[9], "timestamp": sql_result[10]},
-              {"url": sql_result[11], "timestamp": sql_result[12]}]
+    frames = [{"url": sql1_result[3], "timestamp": sql1_result[4]}, {"url": sql1_result[5], "timestamp": sql1_result[6]},
+              {"url": sql1_result[7], "timestamp": sql1_result[8]}, {"url": sql1_result[9], "timestamp": sql1_result[10]},
+              {"url": sql1_result[11], "timestamp": sql1_result[12]}]
+
+
+    print("sql2_result: " + str(sql2_result))
 
     result["frames"] = frames
     return result
@@ -69,7 +75,13 @@ def which_results_exist(results):
     finally:
         connection.close()
 
-    return list(sql_result)
+    cleaned_up = []
+
+    for t in sql_result:
+        for r in t:
+            cleaned_up.append(r)
+
+    return cleaned_up
 
 
 def insert_result(result):
@@ -159,7 +171,6 @@ def select_processed_videos():
             sql_result = [item[0] for item in cursor.fetchall()]
     finally:
         connection.close()
-
     
     return list(sql_result)
 
