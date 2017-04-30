@@ -7,3 +7,5 @@ pyvirtualdisplay
 selenium
 apscheduler
 imgurpython
+numpy
+

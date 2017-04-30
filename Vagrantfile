@@ -71,6 +71,11 @@ Vagrant.configure("2") do |config|
    config.vm.provision "shell", inline: "
      sudo apt-get update
      sudo apt-get install -y git python3-pip python3-dev build-essential zip firefox xvfb
+
+     sudo apt-get install -y python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose
+     sudo apt-get install -y build-essential python3-dev python3-setuptools python3-numpy python3-scipy libatlas-dev libatlas3gf-base
+     sudo pip3 install -U scikit-learn
+     
      sudo apt-get -y autoremove
           
      echo downloading cloud proxy
