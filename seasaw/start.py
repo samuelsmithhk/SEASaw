@@ -33,6 +33,7 @@ def main():
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
     parser.add_argument("--imgur_password", action="store", default=None, dest="imgur_password")
+    parser.add_argument("-s", action="store_true", dest="run_scraper") # will not run on linux box, due to dependencies
     args = parser.parse_args()
 
     if (args.gca_credentials_path is None) or (args.database_password is None):
@@ -45,21 +46,21 @@ def main():
     process_id = process.fork_processes(len(inventory.ports), max_restarts=100)
 
     if process_id is 0:
-        print("start - initiating scraper")
-        # youtube scraper
-        for i in range(0, 5):
-            term_index = randint(0, len(inventory.search_terms))
-            term = inventory.search_terms[term_index]
-            print("start - setting scraper to find 10 results for " + term)
-            scraper.start(term, 10)
-            print("start - resting scraper")
-            time.sleep(3600)
-
-        print("start - scraper finished")
+        if args.run_scraper:
+            print("start - initiating scraper")
+            # youtube scraper
+            for i in range(0, 5):
+                term_index = randint(0, len(inventory.search_terms) - 1)
+                term = inventory.search_terms[term_index]
+                print("start - setting scraper to find 10 results for " + term)
+                scraper.start(term, 10)
+                print("start - resting scraper")
+                time.sleep(3600)
+            print("start - scraper finished")
     elif process_id is 1:
         # imgur uploader
-        if args.imgur_password is None:
-            print("start - imgur password not specified in program args, imgur component will not be launched")
+        if args.imgur_password is None or args.run_scraper is False:
+            print("start - imgur uploader not running")
         else:
             print("start - imgur uploader running")
             while True:
@@ -72,10 +73,11 @@ def main():
                     time.sleep(120)
     elif process_id is 2:
         # database uploader
-        print("start - initiating database uploader")
-        while True:
-            datasourceuploader.start()
-            time.sleep(30)
+        if args.run_scraper:
+            print("start - initiating database uploader")
+            while True:
+                datasourceuploader.start()
+                time.sleep(30)
     elif process_id is 3 or process_id is 4:
         # datasource api
         instance = Application([

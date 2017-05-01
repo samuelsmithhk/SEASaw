@@ -3,7 +3,7 @@ import subprocess
 
 def start(credential_path):
     proxy = subprocess.Popen([
-        '/home/vagrant/cloud_sql_proxy',
+        './cloud_sql_proxy.amd64',
         '-instances=true-vista-164318:us-east1:seasaw' + "=tcp:3306",
         '-credential_file=' + credential_path,
         '&'

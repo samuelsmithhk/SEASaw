@@ -32,4 +32,8 @@ class ResultQueryHandler(RequestHandler):
 class ResultGetterHandler(RequestHandler):
     def get(self, result_id):
         result = dao.result_id_query(result_id)
-        self.write(json.dumps(result))
+
+        if result is None:
+            self.write('{"message":"No result found matching id [' + result_id + ']"}')
+        else:
+            self.write(json.dumps(result))

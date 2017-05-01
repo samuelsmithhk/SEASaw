@@ -49,16 +49,22 @@ def result_id_query(result_id):
     finally:
         connection.close()
 
+    if sql1_result is None:
+        return None
+
     result = {"result_id": result_id, "video_title": sql1_result[1], "video_url": sql1_result[2]}
 
     frames = [{"url": sql1_result[3], "timestamp": sql1_result[4]}, {"url": sql1_result[5], "timestamp": sql1_result[6]},
               {"url": sql1_result[7], "timestamp": sql1_result[8]}, {"url": sql1_result[9], "timestamp": sql1_result[10]},
               {"url": sql1_result[11], "timestamp": sql1_result[12]}]
 
-
-    print("sql2_result: " + str(sql2_result))
-
     result["frames"] = frames
+
+    if sql2_result is not None:
+        result["tags"] = list(set(sql2_result[0].split(",")))
+    else:
+        result["tags"] = []
+
     return result
 
 
