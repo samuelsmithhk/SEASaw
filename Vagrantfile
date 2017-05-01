@@ -77,14 +77,7 @@ Vagrant.configure("2") do |config|
      sudo pip3 install -U scikit-learn
      
      sudo apt-get -y autoremove
-          
-     echo downloading cloud proxy
-     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
-     echo proxy downloaded renaming
-     mv cloud_sql_proxy.linux.amd64 cloud_sql_proxy
-     echo proxy renamed, setting permissions
-     chmod +x cloud_sql_proxy
-     
+
      mkdir /logs
      mkdir /logs/geckodriver
      mkdir /datastore
