@@ -1,22 +1,15 @@
-import os
-import json
+import os, json, time, zipfile, hashlib, ast, pickle, math, os.path, re, string
+
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from os.path import join, dirname
 from os import environ
 from watson_developer_cloud import VisualRecognitionV3
-import time
-import zipfile
-import time
-import hashlib
-import ast
-from seasaw import inventory
 from collections import defaultdict
-import hashlib
-import pickle
-import math
+
+from seasaw import inventory
 from seasaw.visualRecognition.imagedownload import ImageDownload
-import os.path
 from ..datasource.database import dao
-import re
 from seasaw.visualRecognition.visualRecognition import VisualRecognition
 
 class Indexer:
@@ -31,6 +24,7 @@ class Indexer:
             
         self.filenames = [picklefilepath + '/InvertedIndex' + str(i) +'.pickle' for i in range(0,inventory.INDEX_PARTITION)]
         self.IDFfile = picklefilepath + '/IDF.pickle'
+        self.videosFile = picklefilepath + '/ProcessedVideos.pickle'
         
         self.processedVideos = dao.select_processed_videos()
         print ("processedVideos: " + str(self.processedVideos))
@@ -45,13 +39,19 @@ class Indexer:
         #print ("InvertedIndex: " + str(self.INVERTED_INDEX))
         #print ("IDF: " + str(self.IDF))
         
-        if (len(self.videos) >= 2):
+        if (len(self.videos) >= 1):
             #self.downloadPickleFiles('pickleFiles')
-            self.writeInvertedIndex()
-            self.writeIDF()
-            self.writeProcessedVideos()
+            if self.writeProcessedVideos():
+                self.writeInvertedIndex()
+                self.writeIDF()
+            
             self.processedVideos = dao.select_processed_videos()
             print ("processedVideos: " + str(self.processedVideos))
+            with open(self.videosFile, 'wb') as handle:
+                pickle.dump(self.processedVideos, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                print ("Videos processed file write operation complete")
+                handle.close()
+                
             self.INVERTED_INDEX = dict()
             self.postings = defaultdict(dict)
             self.videos = list()
@@ -85,9 +85,13 @@ class Indexer:
             handle.close()
     
     def writeProcessedVideos(self):
+        processed = True
         for id, videoInfo in self.videoInfo.items():
             print ("Video Info" + str(videoInfo))
             dao.insert_processed_videos(videoInfo)
+                
+        return processed
+            
             
     def formInvertedIndex(self):
         for key, value in self.results.items():
@@ -160,8 +164,13 @@ class Indexer:
             self.processedVideos.append(video_id)
     
     def addVideoTitleInvertedIndex(self, title, index_partition, video_id, score):
-        for word in title.split(" "):
-            word = re.sub('\W+','', word)
+        stopWords = set(stopwords.words('english'))
+        punctuations = list(string.punctuation)
+        casefoldData = title.casefold() 
+        tokens = word_tokenize(casefoldData)
+        filteredSentence = [w for w in tokens if w not in stopWords]
+        filteredSentence = [w for w in filteredSentence if w not in punctuations]
+        for word in filteredSentence:
             if word.isalpha():
                 if video_id not in self.INVERTED_INDEX[index_partition][word]:
                     self.INVERTED_INDEX[index_partition][word][video_id] = score

@@ -19,6 +19,10 @@ The project is designed to be easily deployable anywhere.
 - run command: 
 "python3 -m seasaw.start" and  
 	"python3 -m seasaw.scheduler"
+- Follow: 
+import nltk
+nltk.download('stopwords', 'nltk_data')
+nltk.download('punkt', 'nltk_data')
 
 If this is your first time running the project, vagrant up may take some time, as it will be downloading dependencies
 

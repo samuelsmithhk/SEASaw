@@ -1,5 +1,6 @@
 from datetime import datetime, date, time, timedelta
-import os, argparse
+import os, argparse, shutil, time
+from time import mktime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from seasaw.datasource.database import proxy
@@ -11,7 +12,7 @@ def formOptions():
     opts = dict()
     if not times: #empty start and end
         endDate = datetime.now()
-        inDate = endDate + timedelta(days=-100)
+        inDate = endDate + timedelta(days=-1)
         times["start"] = list()
         times["start"].append(inDate)
         times["end"] = list()
@@ -22,26 +23,25 @@ def formOptions():
         times["start"].append(inDate)
         times["end"].append(endDate)
     
-    start = inDate.strftime("%y%m%d%H%M%S")
-    end = endDate.strftime("%y%m%d%H%M%S")
-    opts["start"] = start
-    opts["end"] = end
-    opts["pagination"] = 10000
+    start = time.strptime(inDate.strftime("%y%m%d%H%M%S"), "%y%m%d%H%M%S")
+    end = time.strptime(endDate.strftime("%y%m%d%H%M%S"), "%y%m%d%H%M%S")
+    opts["start"] = int(mktime(start))
+    opts["end"] = int(mktime(end))
+    opts["pagination"] = 100
     opts["page"] = 0
     return opts
 
 def index():
     global indexer
+    global filename
     opts = formOptions()
-    indexer.formIndexer('frames', opts)
+    print ("Options: " + str(opts))
+    indexer.formIndexer(filename, opts)
+    if os.path.exists(filename):
+        shutil.rmtree(filename)
     #print (indexer.getInvertedIndex())
     #print (indexer.getIDF())
 
-
-def removeFiles(dir):
-    filelist = [ f for f in os.listdir(dir) ]
-    for f in filelist:
-        os.remove(dir + "/" + f)
 
 times = dict()
 
@@ -51,27 +51,35 @@ if __name__ == "__main__":
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
     args = parser.parse_args()
     
-    if (args.gca_credentials_path is None) or (args.database_password is None):
-        print("start - Missing credential path or database password, datastore will not be loaded")
-    else:
-        proxy.start(args.gca_credentials_path)
-        dao.init(args.database_password)
     
-    try:
-        scheduler = BlockingScheduler()
-        indexer = Indexer('pickleFiles')
-        
-        #Remove already existing files
-        removeFiles('frames')
-        
-        #Call Indexer
-        index()
+    while True:
+        try:
+            if (args.gca_credentials_path is None) or (args.database_password is None):
+                print("start - Missing credential path or database password, datastore will not be loaded")
+            else:
+                proxy.start(args.gca_credentials_path)
+                dao.init(args.database_password)
+
+            scheduler = BlockingScheduler()
+            indexer = Indexer('pickleFiles')
+            
+            #Remove already existing files
+            filename = 'frames' + datetime.now().strftime("%y%m%d%H%M%S")
+            if not os.path.exists(filename):
+                os.makedirs(filename)
+
+            #Call Indexer
+            index()
     
-        #schedule index after intervals of 3 minutes
-        scheduler.add_job(index, 'interval', minutes=10)
-        scheduler.start() 
+            #schedule index after intervals of 3 minutes
+            scheduler.add_job(index, 'interval', minutes=10)
+            scheduler.start() 
         
-    except Exception as e:
-        print (str(e))
+        except Exception as e:
+            print (str(e))
+            if os.path.exists(filename):
+                shutil.rmtree(filename)
+            time.sleep(20)
+            continue
     
     

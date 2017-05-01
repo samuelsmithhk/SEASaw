@@ -7,4 +7,9 @@ pyvirtualdisplay
 selenium
 apscheduler
 imgurpython
+<<<<<<< Updated upstream
 numpy
+=======
+nltk==3.2.2
+emoji
+>>>>>>> Stashed changes

@@ -1,45 +1,24 @@
-import os
-import json
+import os, json, os.path, time, zipfile, hashlib, ast, pickle, math, re
+
 from os.path import join, dirname
 from os import environ
 from watson_developer_cloud import VisualRecognitionV3
-import time
-import zipfile
-import time
-import hashlib
-import ast
-from seasaw import inventory
 from collections import defaultdict
-import hashlib
-import pickle
-import math
+
+from seasaw import inventory
 from seasaw.visualRecognition.imagedownload import ImageDownload
-import os.path
 from ..datasource.database import dao
-import re
+
 
 
 class VisualRecognition:
     def __init__(self, imagepath, opts, processedVideos):
-        if opts["start"] is None:
-            opts["start"] = inDate.strftime("%y%m%d%H%M%S")
-        opts["start"] = ""
-        if opts["end"] is None:
-            opts["end"] = endDate.strftime("%y%m%d%H%M%S")
-        opts["end"] = ""
-        if opts["pagination"] is None:
-            opts["pagination"] = 1000
-        opts["pagination"] = 1000
-        if opts["page"] is None:
-            opts["page"] = 1
-        opts["page"] = 0
-            
         self.results = dict()
         ImageDownload(imagepath, opts, processedVideos).run()
         self.apikey = ['2165f1c705d401d4ca563e98dd25d52792d2f2d0', 
-                        '25f0a035dea70d2513db56487e5a294201052422', 
-                        'f36ee294e6d1f427a0715d5cc90195ef929b259c']
-        self.key_pointer = 2
+                       '25f0a035dea70d2513db56487e5a294201052422', 
+                       'f36ee294e6d1f427a0715d5cc90195ef929b259c']
+        self.key_pointer = 0
         self.checkPNGImages(imagepath)
         self.checkZip(imagepath)
         self.formZip(imagepath)
