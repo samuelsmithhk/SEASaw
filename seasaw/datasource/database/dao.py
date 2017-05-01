@@ -180,3 +180,18 @@ def select_processed_videos():
     
     return list(sql_result)
 
+
+def delete_from_processed_videos():
+    sql = "TRUNCATE table processed_videos;"
+    connection = pymysql.connect(user="root", password=database_password, host="127.0.0.1", database="resultsdb",
+                                 charset="utf8mb4")
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+            sql_result = cursor.fetchall()
+    finally:
+        connection.close()
+
+    
+    print ("Truncate operation successfull")

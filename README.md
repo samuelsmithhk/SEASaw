@@ -33,8 +33,7 @@ This command requires the previous one to be running, this will run the indexer.
 
 ##### Args
 
-
-###Run with Scraper (can not run on linserv)
+### Run with Scraper (can not run on linserv)
 
 #### Prerequisites
 
@@ -42,6 +41,7 @@ This command requires the previous one to be running, this will run the indexer.
 - (for scraper to run) a valid imgur password from us
 - hashicorp vagrant (to make life easier) - https://www.vagrantup.com/
 - virtualbox (for vagrant)
+
 
 #### Commands
 
@@ -58,6 +58,16 @@ Run the start with the following args:
 - --database_password for the database password
 - --imgur_password with the imgur password
 - -s to enable the scraper
+
+- clone this repo
+- cd into the root directory of the repo
+- run command "vagrant up"
+- run command "vagrant ssh"
+- cd into /vagrant
+- run command: 
+"python3 -m seasaw.start" and  
+	"python3 -m seasaw.scheduler"
+
 
 If this is your first time running the project, vagrant up may take some time, as it will be downloading dependencies
 

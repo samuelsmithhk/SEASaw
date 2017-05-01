@@ -8,3 +8,5 @@ selenium
 apscheduler
 imgurpython
 numpy
+nltk==3.2.2
+emoji
