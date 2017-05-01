@@ -17,7 +17,8 @@ class VisualRecognition:
         ImageDownload(imagepath, opts, processedVideos).run()
         self.apikey = ['2165f1c705d401d4ca563e98dd25d52792d2f2d0', 
                        '25f0a035dea70d2513db56487e5a294201052422', 
-                       'f36ee294e6d1f427a0715d5cc90195ef929b259c']
+                       '3d23140b752178eea59539e69cfd72d546a66d66',
+                       'f4c65ebd717a4fee92c4a014bdeac3bc066a5324']
         self.key_pointer = 0
         self.checkPNGImages(imagepath)
         self.checkZip(imagepath)
