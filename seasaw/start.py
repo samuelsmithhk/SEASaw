@@ -18,8 +18,6 @@ from seasaw.datasource import scraper
 from seasaw.datasource import imguruploader
 from seasaw.datasource import datasourceuploader
 
-from seasaw.frontend.frontendinterface import Index
-from seasaw.frontend.frontendinterface import Web
 from seasaw.frontend.frontendinterface import IndexDotHTMLAwareStaticFileHandler
 from seasaw.frontend.frontendinterface import SearchHandler
 
@@ -100,13 +98,7 @@ def main():
         #     (r"/index")
         # ])
         port = inventory.ports[process_id]
-        if ( port == 25284):
-            print("start - Index Interface listening on port " + str(port))
-            instance = Application([
-                (r"/index", Index)
-                ]) 
-            instance.listen(port)
-        elif( port == 25285):
+        if( port == 25285):
             instance = Application([
                 (r'/search', SearchHandler),
                 (r'/(.*)', IndexDotHTMLAwareStaticFileHandler, dict(path=SETTINGS['static_path']))
