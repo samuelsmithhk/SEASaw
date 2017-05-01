@@ -60,6 +60,8 @@ Run the start with the following args:
 - --imgur_password with the imgur password
 - -s to enable the scraper
 
+Commands (cont...):
+
 - python3 -m seasaw.scheduler
 
 ##### Args
