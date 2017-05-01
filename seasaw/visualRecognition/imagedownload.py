@@ -42,15 +42,6 @@ class ImageDownload:
             else:
                 break
         
-        #videos.remove(1493312192)
-        #videos.remove(1493315890)
-        #videos.remove(1493315894)
-        #videos.remove(1493325021)
-        #videos.remove(1493331679)
-        #videos.remove(1493331831)
-        #videos.remove(1493341424)
-        #videos.remove(1493341605)
-        #videos.remove(1493342089)
         return videos
     
     @gen.coroutine
@@ -79,8 +70,12 @@ class ImageDownload:
             print (str(e))
             
         video_ids = [int(item) for sublist in video_ids for item in sublist]
+        non_videos = [1493598338,1493580257,1493596080,1493593919,1493598641]
+        for id in non_videos:
+            if id in videos:
+                videos.remove(id)
         #Limit to 3 videos for processing
-        video_ids = self.getVideos(video_ids)
+        #video_ids = self.getVideos(video_ids)
         
         #Video Frame Processing
         tasks = []

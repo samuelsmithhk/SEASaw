@@ -60,14 +60,12 @@ Run the start with the following args:
 - --imgur_password with the imgur password
 - -s to enable the scraper
 
-- clone this repo
-- cd into the root directory of the repo
-- run command "vagrant up"
-- run command "vagrant ssh"
-- cd into /vagrant
-- run command: 
-"python3 -m seasaw.start" and  
-	"python3 -m seasaw.scheduler"
+- python3 -m seasaw.scheduler
+
+##### Args
+
+- --gca_credentials_path will need to be a path to the credential file
+- --database_password for the database password
 
 
 If this is your first time running the project, vagrant up may take some time, as it will be downloading dependencies
