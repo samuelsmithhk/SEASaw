@@ -72,8 +72,8 @@ class ImageDownload:
         video_ids = [int(item) for sublist in video_ids for item in sublist]
         non_videos = [1493598338,1493580257,1493596080,1493593919,1493598641]
         for id in non_videos:
-            if id in videos:
-                videos.remove(id)
+            if id in video_ids:
+                video_ids.remove(id)
         #Limit to 3 videos for processing
         #video_ids = self.getVideos(video_ids)
         
