@@ -14,6 +14,7 @@ SEASaw provides users the ability to textually-search for video based on the vis
 - python 3.5, pip
 - linux
 - current working directory at root of repo
+- pip3 install -r requirements.txt --user
 
 #### Command 1
 
