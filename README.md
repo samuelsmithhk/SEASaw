@@ -4,7 +4,7 @@
 SEASaw provides users the ability to textually-search for video based on the visual contents of the video.
 ## How to run
 
-###Run without Scraper
+### Run without Scraper
 
 #### Prerequisites
 
@@ -14,6 +14,7 @@ SEASaw provides users the ability to textually-search for video based on the vis
 - python 3.5, pip
 - linux
 - current working directory at root of repo
+- chmod -x cloud_sql_proxy.amd64
 - pip3 install -r requirements.txt --user
 - nltk's tokenizer, stopwords, punctuations
     import nltk
