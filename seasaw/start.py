@@ -32,6 +32,7 @@ def main():
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
     parser.add_argument("--imgur_password", action="store", default=None, dest="imgur_password")
     parser.add_argument("-s", action="store_true", dest="run_scraper") # will not run on linux box, due to dependencies
+    parser.add_argument("-l", action="store_true", dest="local") # local env and linserv have differences
     args = parser.parse_args()
 
     if (args.gca_credentials_path is None) or (args.database_password is None):
@@ -78,13 +79,25 @@ def main():
                 time.sleep(30)
     elif process_id is 3 or process_id is 4:
         # datasource api
-        instance = Application([
-            (r"/healthcheck", HealthCheckHandler),
-            (r"/results/(.*)", ResultGetterHandler),
-            (r"/results", ResultQueryHandler),
-            (r"/(.*)", StaticFileHandler,
-             {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
-        ])
+
+        if args.local:
+            instance = Application([
+                (r"/healthcheck", HealthCheckHandler),
+                (r"/results/(.*)", ResultGetterHandler),
+                (r"/results", ResultQueryHandler),
+                (r"/(.*)", StaticFileHandler,
+                 {"path": "static/apidocs/datasource_local/", "default_filename": "index.html"})
+            ])
+        else:
+            instance = Application([
+                (r"/healthcheck", HealthCheckHandler),
+                (r"/results/(.*)", ResultGetterHandler),
+                (r"/results", ResultQueryHandler),
+                (r"/(.*)", StaticFileHandler,
+                 {"path": "static/apidocs/datasource/", "default_filename": "index.html"})
+            ])
+
+
 
         port = inventory.ports[process_id - 3]
         instance.listen(port)
