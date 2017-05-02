@@ -6,7 +6,6 @@ from tornado.web import StaticFileHandler
 from tornado import web, gen, httpclient
 from seasaw.frontend.generateResult import generateResultRows
 from seasaw.frontend.generateResult import Result
-import seasaw.scheduler as sc
 from collections import defaultdict
 import numpy as np
 from sklearn.metrics.pairwise import linear_kernel
@@ -67,19 +66,12 @@ class SearchHandler(RequestHandler):
         infile2.close()
 
 
-
         idf = {}
         for term in inv:
             idf[term] = math.log10(len(videos)/ float(len(inv[term])))
 
-        # print(videos)
-
-
-        # # print(inv)
-        # # print(len(inv))
-        # # print(idf)
-        # # print(len(idf))
         query = self.get_argument('query', '')
+        searchbar = """<input class="inputbar" type="text" name="query" value="%s" required>""" %query
         query_terms = query.lower().split()
         query_vector = np.array([[idf.get(term,0.0)for term in query_terms]])
         doc_vector_dict = defaultdict(lambda: np.array([0.0] * len(query_terms)))
@@ -91,7 +83,7 @@ class SearchHandler(RequestHandler):
                 doc_vector_dict[doc_id][i] = tf * idf[term]
         doc_ids = list(doc_vector_dict.keys())
         if len(doc_ids) == 0:
-            self.render("template.html", results="<center><h2> Results not found! Please try another query! <h2></center>")
+            self.render("template.html", searchbar=searchbar, results="<center><h2> Results not found! Please try another query! <h2></center>")
             return
         doc_matrix = np.zeros((len(doc_vector_dict), len(query_terms)))
         for doc_ix, doc_id in enumerate(doc_ids):
@@ -119,6 +111,7 @@ class SearchHandler(RequestHandler):
             for i in video_information:
                 title = video_information["video_title"]
                 url = video_information["video_url"]
+                tags = video_information["tags"]
                 img_li = []
                 st_li = []
                 for frame in video_information["frames"]:
@@ -128,11 +121,21 @@ class SearchHandler(RequestHandler):
                         st = parseTime(start)
                         img_li.append(frame_url)
                         st_li.append(st)
-            res = Result(title, url, img_li, st_li)
+            
+            for ind in range(len(tags)):
+                for q in query_terms:
+                    t = """'%s'""" % q
+                    re = """<b>%s</b>""" % q
+                    if (tags[ind] == q):
+                        tags[ind] = re
+
+            res = Result(title, url, img_li, st_li, tags)
             results.append(res)
+
         res_row = ""
         res_row = generateResultRows(results)
-        self.render("template.html", results=res_row)
+
+        self.render("template.html", searchbar=searchbar, results=res_row)
 
         print(best_doc_ids)
 
@@ -141,7 +144,4 @@ class SearchHandler(RequestHandler):
         self.finish(query)
 
 
-
-# get query terms
-# get results from the database
 

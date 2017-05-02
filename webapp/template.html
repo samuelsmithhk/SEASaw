@@ -11,14 +11,14 @@
     </head>
     <body>
         <div class="jumbotron text-center">
-            <h1>SEASaw</h1>
+            <h1><a href="http://192.168.33.10:25285" style="color: inherit; text-decoration: none">SEASaw</a></h1>
             <p>Video Searching, simplified!</p>
         </div>
 
         <div class="box">
             <form id="queryform" action="http://192.168.33.10:25285/search" method='get'>
                 <span class="icon"><i class="fa fa-search"></i></span>
-                <input class="inputbar" type="text" name="query" placeholder="Search..." required>
+                {{ searchbar }}
                 <input class="submitbtn" type="button" value="Search">
             </form>
         </div>
