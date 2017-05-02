@@ -12,7 +12,7 @@ client_id = "d770cc9eea99c6f"
 def start(password):
     imgur_client = ImgurClient(client_id, password)
 
-    if imgur_client.credits['UserRemaining'] is 0:
+    if imgur_client.credits['UserRemaining'] <= 0:
         return 1
 
     videos = os.listdir("/datastore/captured_frames/")
