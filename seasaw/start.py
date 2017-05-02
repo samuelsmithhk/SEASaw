@@ -20,6 +20,8 @@ from seasaw.datasource import datasourceuploader
 
 from seasaw.frontend.frontendinterface import IndexDotHTMLAwareStaticFileHandler
 from seasaw.frontend.frontendinterface import SearchHandler
+from seasaw.frontend.frontendinterface import IndexDotHTMLAwareStaticFileHandlerL
+from seasaw.frontend.frontendinterface import SearchHandlerL
 
 #import seasaw.scheduler 
 
@@ -106,18 +108,22 @@ def main():
 
     else:
         # Index server threads
-        print(str(process_id) + " reserved for front-end / indexer")
-        # instance = Application([
-        #     (r"/index")
-        # ])
         port = inventory.ports[process_id]
         if( port == 25285):
-            instance = Application([
-                (r'/search', SearchHandler),
-                (r'/(.*)', IndexDotHTMLAwareStaticFileHandler, dict(path=SETTINGS['static_path']))
-                ], **SETTINGS)
-            print("start - Frontend Interface listening on port " + str(port))
-            instance.listen(port)
+            if(args.local): #vagrant
+                instance = Application([
+                    (r'/search', SearchHandler),
+                    (r'/(.*)', IndexDotHTMLAwareStaticFileHandler, dict(path=SETTINGS['static_path']))
+                    ], **SETTINGS)
+                print("start - Frontend Interface listening on port " + str(port))
+                instance.listen(port)
+            else:#linserv
+                instance = Application([
+                    (r'/search', SearchHandlerL),
+                    (r'/(.*)', IndexDotHTMLAwareStaticFileHandlerL, dict(path=SETTINGS['static_path']))
+                    ], **SETTINGS)
+                print("start - Frontend Interface listening on port " + str(port))
+                instance.listen(port)
     
     IOLoop.current().start()
 
