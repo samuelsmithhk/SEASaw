@@ -67,6 +67,7 @@ Run the start with the following args:
 - --database_password for the database password
 - --imgur_password with the imgur password
 - -s to enable the scraper
+- -l known as "local mode", ie, set all internal urls to work on the vagrant box.
 
 **Commands (cont...)**
 
