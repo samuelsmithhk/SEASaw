@@ -39,17 +39,35 @@ search_terms = [
 
 DATA_PARTITIONS = 2
 DATA_SERVERS = []
-for i in range(0,DATA_PARTITIONS):
-    DATA_SERVERS.append('http://192.168.33.10:' + str(ports[i]))
+
 
 INDEX_PARTITION = 2
 INDEX_SERVERS = []
-for i in range(0,INDEX_PARTITION):
-    INDEX_SERVERS.append('http://192.168.33.10:' + str(ports[DATA_PARTITIONS + i]))
+
 
 FRONTEND_PARTITION = 2
 FRONTEND_SERVERS = []
-for i in range(0,FRONTEND_PARTITION):
-    FRONTEND_SERVERS.append('http://192.168.33.10:' + str(ports[DATA_PARTITIONS + INDEX_PARTITION + i]))
 
 WEBAPP_PATH = "webapp/"
+
+
+def set_local():
+    for i in range(0, DATA_PARTITIONS):
+        DATA_SERVERS.append('http://192.168.33.10:' + str(ports[i]))
+
+    for i in range(0, INDEX_PARTITION):
+        INDEX_SERVERS.append('http://192.168.33.10:' + str(ports[DATA_PARTITIONS + i]))
+
+    for i in range(0, FRONTEND_PARTITION):
+        FRONTEND_SERVERS.append('http://192.168.33.10:' + str(ports[DATA_PARTITIONS + INDEX_PARTITION + i]))
+
+
+def set_linserv():
+    for i in range(0, DATA_PARTITIONS):
+        DATA_SERVERS.append('http://linserv2.cims.nyu.edu:' + str(ports[i]))
+
+    for i in range(0, INDEX_PARTITION):
+        INDEX_SERVERS.append('http://linserv2.cims.nyu.edu:' + str(ports[DATA_PARTITIONS + i]))
+
+    for i in range(0, FRONTEND_PARTITION):
+        FRONTEND_SERVERS.append('http://linserv2.cims.nyu.edu:' + str(ports[DATA_PARTITIONS + INDEX_PARTITION + i]))

@@ -6,6 +6,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from seasaw.datasource.database import proxy
 from seasaw.datasource.database import dao
 from seasaw.visualRecognition.indexer import Indexer
+from . import inventory
 
 def formOptions():
     global times
@@ -47,9 +48,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
+    parser.add_argument("-l", action="store_true", dest="local")
     args = parser.parse_args()
-    
-    
+
+    if args.local:
+        inventory.set_local()
+    else:
+        inventory.set_linserv()
+
     while True:
         try:
             filename = 'frames' + datetime.now().strftime("%y%m%d%H%M%S")

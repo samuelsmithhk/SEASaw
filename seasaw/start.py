@@ -28,7 +28,9 @@ from seasaw.frontend.frontendinterface import SearchHandlerL
 SETTINGS = {'static_path': inventory.WEBAPP_PATH,
             'template_path':inventory.WEBAPP_PATH }
 
+
 def main():
+
     parser = argparse.ArgumentParser('SEASaw - A Search Engine For Video Content')
     parser.add_argument("--gca_credentials_path", action="store", default=None, dest="gca_credentials_path")
     parser.add_argument("--database_password", action="store", default=None, dest="database_password")
@@ -36,6 +38,11 @@ def main():
     parser.add_argument("-s", action="store_true", dest="run_scraper") # will not run on linux box, due to dependencies
     parser.add_argument("-l", action="store_true", dest="local") # local env and linserv have differences
     args = parser.parse_args()
+
+    if args.local:
+        inventory.set_local()
+    else:
+        inventory.set_linserv()
 
     if (args.gca_credentials_path is None) or (args.database_password is None):
         print("start - Missing credential path or database password, datastore will not be loaded")
