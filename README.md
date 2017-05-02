@@ -34,6 +34,9 @@ This command requires the previous one to be running, this will run the indexer.
 
 ##### Args
 
+- --gca_credentials_path will need to be a path to the credential file
+- --database_password for the database password
+
 ### Run with Scraper (can not run on linserv)
 
 #### Prerequisites
@@ -60,7 +63,7 @@ Run the start with the following args:
 - --imgur_password with the imgur password
 - -s to enable the scraper
 
-Commands (cont...):
+**Commands (cont...)**
 
 - python3 -m seasaw.scheduler
 
