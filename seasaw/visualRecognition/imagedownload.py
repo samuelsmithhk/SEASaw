@@ -35,7 +35,7 @@ class ImageDownload:
     
     def getVideos(self, video_ids):
         videos = []
-        count = 20
+        count = 100
         for id in video_ids:
             if len(videos) <= count:
                 videos.append(id)
@@ -70,7 +70,10 @@ class ImageDownload:
             print (str(e))
             
         video_ids = [int(item) for sublist in video_ids for item in sublist]
-        non_videos = [1493598338,1493580257,1493596080,1493593919,1493598641]
+        non_videos = [1493598338,1493580257,1493596080,1493593919,
+                      1493598641,1493325021,1493312192,1493331831,
+                      1493315890,1493315894,1493338686,1493342089,
+                      1493346251,1493412359]
         for id in non_videos:
             if id in video_ids:
                 video_ids.remove(id)

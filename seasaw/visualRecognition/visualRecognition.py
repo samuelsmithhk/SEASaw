@@ -15,10 +15,16 @@ class VisualRecognition:
     def __init__(self, imagepath, opts, processedVideos):
         self.results = dict()
         ImageDownload(imagepath, opts, processedVideos).run()
-        self.apikey = ['2165f1c705d401d4ca563e98dd25d52792d2f2d0', 
-                       '25f0a035dea70d2513db56487e5a294201052422', 
-                       '3d23140b752178eea59539e69cfd72d546a66d66',
-                       'f4c65ebd717a4fee92c4a014bdeac3bc066a5324']
+        self.apikey = ['e9903171b11d1258bc872762834252187098d237',
+                        'ab6cd6e728330688718e0277dc6401024381afc0',
+                        'ff5a62b8cb6c07a58bf6f4022e6da76f1604fd4d',
+                        'd06a064171f99e903821cb125039280f81289c94',
+                        'b60c1ac7d8bef2b27096a822ffe72b26382f13d7',
+                        '89a4bfa35196a41b777570a4e9e79bc70a1cee53',
+                        '2165f1c705d401d4ca563e98dd25d52792d2f2d0', 
+                        '25f0a035dea70d2513db56487e5a294201052422', 
+                        '3d23140b752178eea59539e69cfd72d546a66d66',
+                        'f4c65ebd717a4fee92c4a014bdeac3bc066a5324']
         self.key_pointer = 0
         self.checkPNGImages(imagepath)
         self.checkZip(imagepath)

@@ -37,8 +37,6 @@ def index():
     opts = formOptions()
     print ("Options: " + str(opts))
     indexer.formIndexer(filename, opts)
-    if os.path.exists(filename):
-        shutil.rmtree(filename)
     #print (indexer.getInvertedIndex())
     #print (indexer.getIDF())
 
@@ -54,6 +52,7 @@ if __name__ == "__main__":
     
     while True:
         try:
+            filename = 'frames' + datetime.now().strftime("%y%m%d%H%M%S")
             if (args.gca_credentials_path is None) or (args.database_password is None):
                 print("start - Missing credential path or database password, datastore will not be loaded")
             else:
@@ -64,7 +63,6 @@ if __name__ == "__main__":
             indexer = Indexer('pickleFiles')
             
             #Remove already existing files
-            filename = 'frames' + datetime.now().strftime("%y%m%d%H%M%S")
             if not os.path.exists(filename):
                 os.makedirs(filename)
 
