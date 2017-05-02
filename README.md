@@ -15,6 +15,10 @@ SEASaw provides users the ability to textually-search for video based on the vis
 - linux
 - current working directory at root of repo
 - pip3 install -r requirements.txt --user
+- nltk's tokenizer, stopwords, punctuations
+    import nltk
+    nltk.download('stopwords', '/home/vagrant/nltk_data')
+    nltk.download('punkt', '/home/vagrant/nltk_data')
 
 #### Command 1
 
