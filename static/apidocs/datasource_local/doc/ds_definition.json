@@ -1,0 +1,147 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SEASaw Data Collector API"
+  },
+  "paths": {
+    "/results": {
+      "get": {
+        "description": "Gets an array of result IDs.\n\nOptional query params **start** and **end** determine start and end timestamps of the range of time that the results were collected by the data collector in. (if not specified, everything)\n\nOptional query param **pagination** determines the number of results to return (if not specified, 10) (max is 100, if any parameter higher than 100 will be set back to 100)\n\nOptional query param **page** determines which page of the pagination to retrieve (if not specifed, first page)\n\nSo, calling results without any options will return an array of IDs containing the first 10 results found.\n",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "The start of the query range (epoch time)",
+            "required": false,
+            "type": "number",
+            "format": "long"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The end of the query range (epoch time)",
+            "required": false,
+            "type": "number",
+            "format": "long"
+          },
+          {
+            "name": "pagination",
+            "in": "query",
+            "description": "How many results per page",
+            "required": false,
+            "type": "number",
+            "format": "int"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page of the pagination",
+            "required": false,
+            "type": "number",
+            "format": "long"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "result IDs"
+                  }
+                },
+                "pagination": {
+                  "type": "number",
+                  "format": "int",
+                  "description": "Number of results per page"
+                },
+                "page": {
+                  "type": "number",
+                  "format": "int",
+                  "description": "The page number of the results"
+                },
+                "count": {
+                  "type": "number",
+                  "format": "int",
+                  "description": "The total number of results that match the query"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/results/{result_id}": {
+      "get": {
+        "description": "Gets the result object tied to the result ID\n",
+        "parameters": [
+          {
+            "name": "result_id",
+            "in": "path",
+            "description": "The ID of the result object being requested",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result_id": {
+                  "type": "string",
+                  "description": "The ID of this result object"
+                },
+                "video_title": {
+                  "type": "string",
+                  "description": "The title of the video"
+                },
+                "video_url": {
+                  "type": "string",
+                  "description": "The Youtube ID of the video which can be used to build a url"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "the tags that relate to this video",
+                  "items": {
+                    "type": "string",
+                    "description": "A tag that relates to this video"
+                  }
+                },
+                "frames": {
+                  "type": "array",
+                  "description": "array of frame objects",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "The imgur ID which can be used to build the imgur url"
+                      },
+                      "timestamp": {
+                        "type": "string",
+                        "description": "The time in the video that the frame appears \"mm:ss\""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  }
+}
