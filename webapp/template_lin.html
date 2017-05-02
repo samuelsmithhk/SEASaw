@@ -1,0 +1,38 @@
+{% autoescape None %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>SEASaw - video searching</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="main.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="jumbotron text-center">
+            <h1><a href="http://192.168.33.10:25285" style="color: inherit; text-decoration: none">SEASaw</a></h1>
+            <p>Video Searching, simplified!</p>
+        </div>
+
+        <div class="box">
+            <form id="queryform" action="http://linserv2.cims.nyu.edu:25285/search" method='get'>
+                <span class="icon"><i class="fa fa-search"></i></span>
+                {{ searchbar }}
+                <input class="submitbtn" type="button" value="Search">
+            </form>
+        </div>
+        
+        <!-- Results -->
+        <div class="results">
+        {{ results }}
+                        <!-- Pop-up player -->
+                        <div class="popup" id="media-popup">
+                            <iframe id="popframe" width="853" height="480" src="" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                    <script type="text/javascript" src="main.js"></script>
+                </body>
+            </html>
